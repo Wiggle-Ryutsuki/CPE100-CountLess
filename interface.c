@@ -21,12 +21,12 @@ void getMenuSelection(){
     // Code here
 }
 
-// Functions that handles user input
+// Functions that handles user input | Change return type to appropriate type
 void getUserInput(){
     // Code here
 }
 
-// Function that outputs feedback
+// Function that outputs feedback | Change return type to appropriate type
 void displayMessage(){
     // Code here
 }
