@@ -1,0 +1,5 @@
+Timestamp       ,ActionType         ,User     ,ProductName ,Category    ,DiscountCode ,Price  ,Quantity ,Total
+12/8/2024 10:45 ,Purchase Completed ,Customer ,Textbook    ,Educational ,STRAIGHTA5   ,300.00 ,       1 ,  300
+12/8/2024 16:30 ,Purchase Completed ,Customer ,Book Bag    ,Accessories ,PUMPKIN200   ,230.00 ,       1 ,  230
+12/8/2024 18:45 ,Purchase Completed ,Customer ,Highlighter ,Stationery  ,-            , 10.00 ,       2 ,   20
+12/8/2024 22:15 ,Purchase Completed ,Customer ,Earphones   ,Electronics ,-            , 50.00 ,       1 ,   50
