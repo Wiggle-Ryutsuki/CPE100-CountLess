@@ -99,8 +99,9 @@ Presentation Date: To be announced. (it should be 18th December 2024)
 
 ### Project Lead/Coordinator
 
-Name:
-ID: 6707050____
+- Name:
+- ID: 6707050____
+
 Code Focus:
 
 - Main Program File:
@@ -112,8 +113,9 @@ Code Focus:
 
 ### Owner Features Developer
 
-Name:
-ID: 6707050____
+- Name:
+- ID: 6707050____
+
 Code Focus:
 
 - File: `owner_features.c`
@@ -138,8 +140,9 @@ Helper File:
 
 ### Customer Features Developer
 
-Name: Iris
-ID: 67070503478
+- Name: Iris
+- ID: 67070503478
+
 Code Focus:
 
 - File: `customer_features.c`
@@ -162,10 +165,11 @@ Helper File:
 
 ### Hybrid and Automation Developer
 
+- Name: Snooker
+- ID: 67070503461
+
 Code Focus:
 
-Name:Snooker
-ID: 67070503461
 - File: `automation.c`
   - Develops script execution for **restock and purchase**.
     - `executeRestockScript()`
@@ -178,12 +182,13 @@ ID: 67070503461
 
 Helper File:
 
-Name:
-ID: 6707050____
 - `automation.h`
   - Declares all related functions.
 
 ### Database and Interface Specialist
+
+- Name:
+- ID: 6707050____
 
 Code Focus:
 
