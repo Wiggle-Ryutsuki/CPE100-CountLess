@@ -99,6 +99,8 @@ Presentation Date: To be announced. (it should be 18th December 2024)
 
 ### Project Lead/Coordinator
 
+Name:
+ID: 6707050____
 Code Focus:
 
 - Main Program File:
@@ -106,9 +108,12 @@ Code Focus:
     - Handles the program's main menu and overall flow.
     - Calls functions developed by other team members.
     - Manages integration and ensures smooth interaction between modules.
+    - Report Writing
 
 ### Owner Features Developer
 
+Name:
+ID: 6707050____
 Code Focus:
 
 - File: `owner_features.c`
@@ -133,6 +138,8 @@ Helper File:
 
 ### Customer Features Developer
 
+Name:
+ID: 6707050____
 Code Focus:
 
 - File: `customer_features.c`
@@ -157,6 +164,8 @@ Helper File:
 
 Code Focus:
 
+Name:
+ID: 6707050____
 - File: `automation.c`
   - Develops script execution for **restock and purchase**.
     - `executeRestockScript()`
@@ -169,6 +178,8 @@ Code Focus:
 
 Helper File:
 
+Name:
+ID: 6707050____
 - `automation.h`
   - Declares all related functions.
 
