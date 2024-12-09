@@ -164,8 +164,8 @@ Helper File:
 
 Code Focus:
 
-Name:
-ID: 6707050____
+Name:Snooker
+ID: 67070503461
 - File: `automation.c`
   - Develops script execution for **restock and purchase**.
     - `executeRestockScript()`
