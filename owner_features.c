@@ -86,7 +86,93 @@ void addProduct()
 
 // Function that views a products information | Change return type to appropriate type
 void viewProduct(){
-    // Code here
+    // Open the file in read mode
+    FILE *file = fopen("products2.csv", "r");
+
+    // Check if file exists
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+
+    }
+
+    // Create an array of size 1024 (to read lines)
+    char line[1024];
+
+    // Skip the header line
+    fgets(line, sizeof(line), file);
+
+    // Print Headers for better readability
+    printf("%-10s %-25s %-45s %-15s %-10s %-10s %-10s %-10s %s\n", "ID", "Name", "Description", "Category", "Price", "Stock", "MinThresh", "Restock", "LastUpdated");
+    printf("----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    // Read and print each line from the file
+    while (fgets(line, sizeof(line), file))
+    {
+        // Variables
+        char productID[10], productName[50], description[100], category[50], lastUpdated[20];
+        int stockQuantity, minimumThreshold, restockAmount;
+        float price;
+
+        // Use strtok to handle fields
+        // strtok is a function that can split strings into multiple pieces called tokens
+        // The first argument for strtok is a pointer, the second argument are delimiters, basically character to look for to make a split in a string, in this case it's a comma
+        char *token = strtok(line, ",");
+        strcpy(productID, token); //productionID is now whatever "token" was pointing at, "token" was pointing at whatever was before the first comma.
+
+        token = strtok(NULL, ","); // We input NULL as the first argument to get more pieces of the same string, basically whatever is after the first comma and before the second comma.
+        strcpy(productName, token); // productName is now whatever "token" was pointing at, "token" was pointing at the second peice of the string
+
+        // The description can contain commas that are NOT supposed to be seperators. This is here to fix any issues relating to commas
+        // Check if the description is quoted ""
+        token = strtok(NULL, ","); // Get next peice
+        if (token[0] == '"') {
+            // Handle quoted description
+            strcpy(description, token + 1); // Skip the opening quote
+            while (token[strlen(token) - 1] != '"') {
+                token = strtok(NULL, ",");
+                strcat(description, ",");
+                strcat(description, token);
+            }
+            description[strlen(description) - 1] = '\0'; // Remove the closing quote
+
+            // Check for double quotes at the end and replace with a single quote. Because descriptions can be like this: "Pleated Black Skirt, 38"""
+            size_t len = strlen(description);
+            if (len >= 2 && strcmp(&description[len - 2], "\"\"") == 0)
+            {
+                description[len - 2] = '"';
+                description[len - 1] = '\0';
+            }
+        } 
+        // Descriptions with no commas
+        else {
+            strcpy(description, token);
+        }
+
+        token = strtok(NULL, ","); // Get next peice
+        strcpy(category, token);   // category is now whatever "token" was pointing at, "token" was pointing at the fourth peice of the string
+
+        token = strtok(NULL, ","); // Get next peice
+        price = atof(token);       // price is a float, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next peice
+        stockQuantity = atoi(token); // stockQuantity is an int, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next peice
+        minimumThreshold = atoi(token); // minimumThreshold is an int, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next peice
+        restockAmount = atoi(token); // restockAmount is an int, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next peice
+        strcpy(lastUpdated, token); // lastUpdated is now whatever "token" was pointing at, "token" was pointing at the last peice of the string
+
+        // Print the product details in a formatted way
+        printf("%-10s %-25s %-45s %-15s %-10.2f %-10d %-10d %-10d %s\n", productID, productName, description, category, price, stockQuantity, minimumThreshold, restockAmount, lastUpdated);
+    }
+
+    fclose(file); // Close the file
 }
 
 // Function that edits a products information | Change return type to appropriate type
@@ -155,8 +241,7 @@ void getLastProductID(char *lastID)
 }
 
 // Test
-int main()
+int main(void)
 {
-    addProduct();
-    return 0;
+    viewProduct();
 }
