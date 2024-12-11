@@ -1,3 +1,4 @@
+// Muhammad Asad Aziz 67070503472
 // This script is for programming all owner features
 
 #include <stdio.h>
@@ -18,6 +19,7 @@ void applyCoupon();
 // Function that creates new product | Change return type to appropriate type
 void addProduct(){
     // Code here
+    file 
 }
 
 // Function that views a products information | Change return type to appropriate type
