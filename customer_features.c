@@ -14,6 +14,11 @@ void checkoutCart();
 void updateInventoryAfterPurchase();
 void applyCouponAtCheckout();
 
+//test
+int main(){
+    searchProduct();
+}
+
 
 // Function that searches for a product | Change return type to appropriate type
 void searchProduct(){
@@ -23,7 +28,7 @@ void searchProduct(){
     //check if file exists
     if (file == NULL){
         printf("Error: Unable to open the file.\n");
-        return 1;
+        return;
     }
 
     //variables
@@ -44,7 +49,7 @@ void searchProduct(){
     }product [1000];
 
     while(fgets(line, sizeof(line), file)){
-
+        
         //skip the header
         if (isFirstLine) {
             isFirstLine = 0;
@@ -65,7 +70,7 @@ void searchProduct(){
             token = strtok(NULL, ",");
             strcat(product[i].description, ",");
             strcat(product[i].description, token);
-            
+
             product[i].description[strlen(product[i].description) - 1] = '\0'; // Remove the closing quote
 
             // Check for double quotes at the end and replace with a single quote. Because descriptions can be like this: "Pleated Black Skirt, 38"""
@@ -156,3 +161,4 @@ void updateInventoryAfterPurchase(){
 void applyCouponAtCheckout(){
     // Code here
 }
+
