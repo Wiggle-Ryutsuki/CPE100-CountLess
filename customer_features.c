@@ -45,6 +45,7 @@ void searchProduct(){
 
     while(fgets(line, sizeof(line), file)){
 
+        //skip the header
         if (isFirstLine) {
             isFirstLine = 0;
             continue;
@@ -60,11 +61,11 @@ void searchProduct(){
         if (token[0] == '"'){
             // Handle quoted description
             strcpy(product[i].description, token + 1); // Skip the opening quote
-            while (token[strlen(token) - 1] != '"') {
-                token = strtok(NULL, ",");
-                strcat(product[i].description, ",");
-                strcat(product[i].description, token);
-            }
+            
+            token = strtok(NULL, ",");
+            strcat(product[i].description, ",");
+            strcat(product[i].description, token);
+            
             product[i].description[strlen(product[i].description) - 1] = '\0'; // Remove the closing quote
 
             // Check for double quotes at the end and replace with a single quote. Because descriptions can be like this: "Pleated Black Skirt, 38"""
@@ -92,6 +93,8 @@ void searchProduct(){
 
     }
 
+    fclose(file);
+
     //user interface to select search criteria
     printf("Search by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n\nYour selection: ");
     scanf("%d",&choice);
@@ -104,8 +107,8 @@ void searchProduct(){
         scanf("%s",productName);
 
         //search by name
-        i = 1;
-        while(fgets, sizeof(line), file){
+        i = 0;
+        while(i<=30){
 
             //compare names
             if( strcmp(productName, product[i].productname)==0){
