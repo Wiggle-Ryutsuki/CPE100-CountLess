@@ -15,7 +15,13 @@ void applyCouponAtCheckout();
 
 // Function that searches for a product | Change return type to appropriate type
 void searchProduct(){
-    // Code here
+    
+    FILE *file = fopen("products.csv","r");
+
+    if (file == NULL){
+        printf("Error: Unable to open the file.\n");
+        return 1;
+    }
 }
 
 // Function that calls for all products | Change return type to appropriate type
