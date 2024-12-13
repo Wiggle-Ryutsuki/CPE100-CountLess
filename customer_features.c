@@ -101,14 +101,15 @@ void searchProduct(){
     fclose(file);
 
     //user interface to select search criteria
-    printf("Search by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n\nYour selection: ");
+    printf("\nSearch by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n\nYour selection: ");
     scanf("%d",&choice);
     
     switch (choice)
     {
+    //search product by name
     case 1:
         //Enter product name
-        printf("Enter product name: ");
+        printf("\nEnter product name: ");
         scanf("\n%[^\n]s",productName);
 
         //loop through the names
@@ -116,6 +117,9 @@ void searchProduct(){
         while(i<=30){
 
             //If string lentghs are the same, then it can be the product we are looking for
+
+            
+
             if(strlen(productName)==strlen(product[i].productname)){
 
                 //variable to compare the product name without modifying the actual struct data
@@ -151,7 +155,7 @@ void searchProduct(){
 
                 //product name comparisons, if it is the same, print out the information
                 if(strcmp(productName, compareName)==0){
-                    printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+                    printf("Product ID: %s | Product name: %-20s | %-45s | Price: %-5.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
                 }
 
             }else{
@@ -164,9 +168,100 @@ void searchProduct(){
             i++;
 
         }
+
         break;
     
+    //search product by category
+    case 2:
+        //Enter product category
+        printf("\nEnter product category: ");
+        scanf("\n%[^\n]s",category);
+
+        //loop through product list
+        i = 0;
+        while(i<=30){
+
+            //If string lentghs are the same, then it can be the category we are looking for
+            if(strlen(category)==strlen(product[i].category)){
+
+                //variable to coampre category without modifying the actual struct data
+                char compareCategory[50];
+
+                //It takes the name of the current product category
+                strcpy(compareCategory, product[i].category);
+
+                //change entered product category to lower case to make it easier to compare to the other product name
+                j=0;
+                while(category[j] != '\0'){
+
+                    if(category[j] >= 'A' && category[j] <= 'Z' ){
+
+                        category[j]+=32;
+
+                    }
+                    j++;
+                }
+
+                //change current product category to lower case to prepare for the comparison
+                j=0;
+                while(compareCategory[j] != '\0'){
+
+                    if(compareCategory[j] >= 'A' && compareCategory[j] <= 'Z' ){
+
+                        compareCategory[j]+=32;
+
+                    }
+                    j++;
+
+                }
+
+                //category comparisons, if it is the same, print out the information
+                if(strcmp(category, compareCategory)==0){
+                    printf("Product ID: %s | Product name: %-20s | %-45s | Price: %-5.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+                }
+
+            }else{
+
+                //If string lentghs are not the same then skip this iteration
+                i++;
+                continue;
+            }
+
+            i++;
+
+        }
+
+        break;
+
+    //search product by price
+    case 3:
+
+        //Enter product price
+        printf("\nEnter product price: ");
+        scanf("%f",&price);
+
+        //loop through the product list
+        i = 0;
+        while(i<=30){
+
+            //check if prices are the same
+            if(price==product[i].price){
+
+                //print out product info
+                printf("Product ID: %s | Product name: %-20s | %-45s | Price: %-5.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+
+            }
+
+            i++;
+
+        }
+
+        break;
+
     default:
+
+        printf("\nPlease enter valid option\n");
+
         break;
     }
 
