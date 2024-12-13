@@ -97,6 +97,7 @@ void searchProduct(){
 
     }
 
+    //close the file
     fclose(file);
 
     //user interface to select search criteria
@@ -110,17 +111,20 @@ void searchProduct(){
         printf("Enter product name: ");
         scanf("\n%[^\n]s",productName);
 
-        //search by name
+        //loop through the names
         i = 0;
         while(i<=30){
 
-
+            //If string lentghs are the same, then it can be the product we are looking for
             if(strlen(productName)==strlen(product[i].productname)){
 
-                char compare[50];
+                //variable to compare the product name without modifying the actual struct data
+                char compareName[50];
 
-                strcpy(compare, product[i].productname);
+                //It takes the name of the current product
+                strcpy(compareName, product[i].productname);
 
+                //change entered product name to lower case to make it easier to compare to the other product name
                 j=0;
                 while(productName[j] != '\0'){
 
@@ -132,23 +136,27 @@ void searchProduct(){
                     j++;
                 }
 
+                //change current product name to lower case to prepare for the comparison
                 j=0;
-                while(compare[j] != '\0'){
+                while(compareName[j] != '\0'){
 
-                    if(compare[j] >= 'A' && compare[j] <= 'Z' ){
+                    if(compareName[j] >= 'A' && compareName[j] <= 'Z' ){
 
-                        compare[j]+=32;
+                        compareName[j]+=32;
 
                     }
                     j++;
 
                 }
 
-                if(strcmp(productName, compare)==0){
+                //product name comparisons, if it is the same, print out the information
+                if(strcmp(productName, compareName)==0){
                     printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
                 }
 
             }else{
+
+                //If string lentghs are not the same then skip this iteration
                 i++;
                 continue;
             }
