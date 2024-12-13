@@ -32,10 +32,10 @@ void searchProduct(){
     }
 
     //variables
-    char line[1000]; //for the struct
+    char line[1000]; 
     char productName[50], category[50];
     float price;
-    int choice, i=0, isFirstLine=1;
+    int choice, i=0, j=0,k=0, isFirstLine=1;
 
     //get product database
     struct products
@@ -93,7 +93,6 @@ void searchProduct(){
         token = strtok(NULL, ",");
         product[i].stockquantity = atoi(token);
 
-        printf("%s %s %s %s %.2f %d\n",product[i].productID, product[i].productname, product[i].description, product[i].category, product[i].price, product[i].stockquantity);
         i++;
 
     }
@@ -109,18 +108,51 @@ void searchProduct(){
     case 1:
         //Enter product name
         printf("Enter product name: ");
-        scanf("%s",productName);
+        scanf("\n%[^\n]s",productName);
 
         //search by name
         i = 0;
         while(i<=30){
 
-            //compare names
-            if( strcmp(productName, product[i].productname)==0){
 
-                printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
-           
+            if(strlen(productName)==strlen(product[i].productname)){
+
+                char compare[50];
+
+                strcpy(compare, product[i].productname);
+
+                j=0;
+                while(productName[j] != '\0'){
+
+                    if(productName[j] >= 'A' && productName[j] <= 'Z' ){
+
+                        productName[j]+=32;
+
+                    }
+                    j++;
+                }
+
+                j=0;
+                while(compare[j] != '\0'){
+
+                    if(compare[j] >= 'A' && compare[j] <= 'Z' ){
+
+                        compare[j]+=32;
+
+                    }
+                    j++;
+
+                }
+
+                if(strcmp(productName, compare)==0){
+                    printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+                }
+
+            }else{
+                i++;
+                continue;
             }
+
             i++;
 
         }
