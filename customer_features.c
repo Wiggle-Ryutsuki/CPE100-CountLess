@@ -118,7 +118,7 @@ void searchProduct(){
             //compare names
             if( strcmp(productName, product[i].productname)==0){
 
-                printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].category, product[i].price, product[i].stockquantity);
+                printf("Product ID: %7s | Product name: %7s | %7s | Price: %.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
            
             }
             i++;

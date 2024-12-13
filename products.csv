@@ -1,31 +1,31 @@
-﻿ProductID ,ProductName              ,Description                               ,Category    ,Price      ,StockQuantity ,MinimumThreshold ,RestockAmount ,LastUpdated
-P001      ,Pen                      ,Black Ballpoint Pen                       ,Stationary  ,12.00      ,           50 ,              15 ,          200 ,2024-07-02
-P002      ,Pencil                   ,HB Pencil                                 ,Stationary  ,8.00       ,           65 ,              20 ,          200 ,2024-08-22
-P003      ,Notebook                 ,"A5 lined, 80 pages"                      ,Stationary  ,25.00      ,           40 ,              12 ,          200 ,2024-08-23
-P004      ,Sketchbook               ,"A5 Drawing Sketchbook, 50 pages"         ,Stationary  ,32.00      ,           30 ,               9 ,          200 ,2024-08-24
-P005      ,Highlighter              ,Yellow non-toxic highlighter              ,Stationary  ,10.00      ,           50 ,              15 ,          200 ,2024-08-25
-P006      ,Polo Shirt               ,"University-branded, cotton"              ,Merch       ,100.00     ,          100 ,              30 ,          200 ,2024-08-26
-P007      ,Hoodie                   ,"University-branded, fleece-lined"        ,Merch       ,120.00     ,           56 ,              17 ,          200 ,2024-08-27
-P008      ,Cap                      ,"University logo, adjustable size"        ,Merch       ,60.00      ,           40 ,              12 ,          200 ,2024-08-28
-P009      ,Thermos                  ,"University logo,360ml"                   ,Merch       ,200.00     ,           30 ,               9 ,          200 ,2024-08-29
-P010      ,Fountain Pen             ,University Logo                           ,Merch       ,400.00     ,           30 ,               9 ,          200 ,2024-08-30
-P011      ,Skirt                    ,"Pleated Black Skirt, 38"""               ,Uniform     ,100.00     ,          100 ,              30 ,          200 ,2024-08-31
-P012      ,Men's Trousers           ,"Black University Trousers, 40"           ,Uniform     ,100.00     ,          100 ,              30 ,          200 ,2024-09-01
-P013      ,Men's Uniform Shirt      ,"White University Shirt, L"               ,Uniform     ,200.00     ,          100 ,              30 ,          200 ,2024-09-02
-P014      ,Women's Uniform Shirt    ,"White University Shirt, M"               ,Uniform     ,200.00     ,          100 ,              30 ,          200 ,2024-09-03
-P015      ,Brown Belt               ,"University Leather Belt, 35"""           ,Uniform     ,60.00      ,          150 ,              45 ,          200 ,2024-09-04
-P016      ,Black Belt               ,"University Leather Belt, 40"""           ,Uniform     ,60.00      ,          120 ,              36 ,          200 ,2024-09-05
-P017      ,Belt Buckle              ,"University Belt Buckle, Male and Female" ,Uniform     ,40.00      ,           85 ,              26 ,          200 ,2024-09-06
-P018      ,University Shirt Buttons ,Button Shells                             ,Uniform     ,25.00      ,           45 ,              14 ,          200 ,2024-09-07
-P019      ,University Shirt Pin     ,Women's University Pin                    ,Uniform     ,25.00      ,          150 ,              45 ,          200 ,2024-09-08
-P020      ,Canvas Tote Bag          ,"University logo, eco-friendly"           ,Merch       ,200.00     ,           65 ,              20 ,          200 ,2024-09-09
-P021      ,Book Bag                 ,"Durable canvas, zippered"                ,Merch       ,230.00     ,           75 ,              23 ,          200 ,2024-09-10
-P022      ,Back Pack                ,"University logo, eco-friendly"           ,Merch       ,230.00     ,           45 ,              14 ,          200 ,2024-09-11
-P023      ,Calculator               ,"Scientific calculator, solar powered"    ,Electronics ,"1,105.00" ,           50 ,              15 ,          200 ,2024-09-12
-P024      ,Writing Tablet           ,7*4 -inch drawing tablet                  ,Electronics ,"2,000.00" ,           20 ,               6 ,          200 ,2024-09-13
-P025      ,Computer Mouse           ,Wired Computer Mouse                      ,Electronics ,200.00     ,           35 ,              11 ,          200 ,2024-09-14
-P026      ,Charging Cable           ,USB-C Charging Wire                       ,Electronics ,89.00      ,           60 ,              18 ,          200 ,2024-09-15
-P027      ,Earphones                ,"3.5mm plug, 1.2m wire"                   ,Electronics ,50.00      ,           45 ,              14 ,          200 ,2024-09-16
-P028      ,Textbook                 ,"Math for Engineers, 3rd Edition"         ,Books       ,300.00     ,           65 ,              20 ,          200 ,2024-09-17
-P029      ,Comic Book               ,Batman                                    ,Books       ,250.00     ,           50 ,              15 ,          200 ,2024-09-18
-P030      ,Manga                    ,Fairy Tail: 100 Years Quest               ,Books       ,250.00     ,           20 ,               6 ,          200 ,2024-09-19
+﻿ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated
+P001,Pen,Black Ballpoint Pen,Stationary,12.00,50,15,200,2024-07-02
+P002,Pencil,HB Pencil,Stationary,8.00,65,20,200,2024-08-22
+P003,Notebook,"A5 lined, 80 pages",Stationary,25.00,40,12,200,2024-08-23
+P004,Sketchbook,"A5 Drawing Sketchbook, 50 pages",Stationary,32.00,30,9,200,2024-08-24
+P005,Highlighter,Yellow non-toxic highlighter,Stationary,10.00,50,15,200,2024-08-25
+P006,Polo Shirt,"University-branded, cotton",Merch,100.00,100,30,200,2024-08-26
+P007,Hoodie,"University-branded, fleece-lined",Merch,120.00,56,17,200,2024-08-27
+P008,Cap,"University logo, adjustable size",Merch,60.00,40,12,200,2024-08-28
+P009,Thermos,"University logo,360ml",Merch,200.00,30,9,200,2024-08-29
+P010,Fountain Pen,University Logo,Merch,400.00,30,9,200,2024-08-30
+P011,Skirt,"Pleated Black Skirt, 38""",Uniform,100.00,100,30,200,2024-08-31
+P012,Men's Trousers,"Black University Trousers, 40",Uniform,100.00,100,30,200,2024-09-01
+P013,Men's Uniform Shirt,"White University Shirt, L",Uniform,200.00,100,30,200,2024-09-02
+P014,Women's Uniform Shirt,"White University Shirt, M",Uniform,200.00,100,30,200,2024-09-03
+P015,Brown Belt,"University Leather Belt, 35""",Uniform,60.00,150,45,200,2024-09-04
+P016,Black Belt,"University Leather Belt, 40""",Uniform,60.00,120,36,200,2024-09-05
+P017,Belt Buckle,"University Belt Buckle, Male and Female",Uniform,40.00,85,26,200,2024-09-06
+P018,University Shirt Buttons,Button Shells,Uniform,25.00,45,14,200,2024-09-07
+P019,University Shirt Pin,Women's University Pin,Uniform,25.00,150,45,200,2024-09-08
+P020,Canvas Tote Bag,"University logo, eco-friendly",Merch,200.00,65,20,200,2024-09-09
+P021,Book Bag,"Durable canvas, zippered",Merch,230.00,75,23,200,2024-09-10
+P022,Back Pack,"University logo, eco-friendly",Merch,230.00,45,14,200,2024-09-11
+P023,Calculator,"Scientific calculator, solar powered",Electronics,"1,105.00",50,15,200,2024-09-12
+P024,Writing Tablet,7*4 -inch drawing tablet,Electronics,"2,000.00",20,6,200,2024-09-13
+P025,Computer Mouse,Wired Computer Mouse,Electronics,200.00,35,11,200,2024-09-14
+P026,Charging Cable,USB-C Charging Wire,Electronics,89.00,60,18,200,2024-09-15
+P027,Earphones,"3.5mm plug, 1.2m wire",Electronics,50.00,45,14,200,2024-09-16
+P028,Textbook,"Math for Engineers, 3rd Edition",Books,300.00,65,20,200,2024-09-17
+P029,Comic Book,Batman,Books,250.00,50,15,200,2024-09-18
+P030,Manga,Fairy Tail: 100 Years Quest,Books,250.00,20,6,200,2024-09-19
