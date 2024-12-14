@@ -14,15 +14,37 @@ void checkoutCart();
 void updateInventoryAfterPurchase();
 void applyCouponAtCheckout();
 
+//For initializing product database
+void productInformation();
+
+struct cart
+{
+    char productID[10];
+    char productname[50];
+    float price;
+    int amount;
+}InCart [1000];
+
+    //get product database
+struct products
+{
+    char productID[10];
+    char productname[50];
+    char description[100];
+    char category[50];
+    float price;
+    int stockquantity;
+}product [1000];
+
 //test
 int main(){
-    addToCart();
+
+    productInformation();
+    searchProduct();
 }
 
+void productInformation(){
 
-// Function that searches for a product | Change return type to appropriate type
-void searchProduct(){
-    //open file for reading
     FILE *file = fopen("products.csv","r");
 
     //check if file exists
@@ -31,22 +53,8 @@ void searchProduct(){
         return;
     }
 
-    //variables
-    char line[1000]; 
-    char productName[50], category[50];
-    float price;
-    int choice, i=0, j=0,k=0, isFirstLine=1;
-
-    //get product database
-    struct products
-    {
-        char productID[10];
-        char productname[50];
-        char description[100];
-        char category[50];
-        float price;
-        int stockquantity;
-    }product [1000];
+    char line[1000];
+    int i=0, isFirstLine=1;
 
     while(fgets(line, sizeof(line), file)){
         
@@ -99,6 +107,17 @@ void searchProduct(){
 
     //close the file
     fclose(file);
+
+}
+
+
+// Function that searches for a product | Change return type to appropriate type
+void searchProduct(){
+
+    //variables
+    char productName[50], category[50];
+    float price;
+    int choice, i=0, j=0;
 
     //user interface to select search criteria
     printf("\nSearch by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n\nYour selection: ");
@@ -267,85 +286,9 @@ void searchProduct(){
 // Function that calls for all products | Change return type to appropriate type
 void browseProducts(){
 
-    //open file for reading
-    FILE *file = fopen("products.csv","r");
-
-    //check if file exists
-    if (file == NULL){
-        printf("Error: Unable to open the file.\n");
-        return;
-    }
-
     //variables
-    char line[1000]; 
-    char productName[50], category[50];
-    float price;
-    int choice, i=0, j=0,k=0, isFirstLine=1;
+    int i=0;
 
-    //get product database
-    struct products
-    {
-        char productID[10];
-        char productname[50];
-        char description[100];
-        char category[50];
-        float price;
-        int stockquantity;
-    }product [1000];
-
-    while(fgets(line, sizeof(line), file)){
-        
-        //skip the header
-        if (isFirstLine) {
-            isFirstLine = 0;
-            continue;
-        }
-
-        char *token = strtok(line, ",");
-        strcpy(product[i].productID, token);
-
-        token = strtok(NULL, ",");
-        strcpy(product[i].productname, token);
-
-        token = strtok(NULL, ","); 
-        if (token[0] == '"'){
-            // Handle quoted description
-            strcpy(product[i].description, token + 1); // Skip the opening quote
-            
-            token = strtok(NULL, ",");
-            strcat(product[i].description, ",");
-            strcat(product[i].description, token);
-
-            product[i].description[strlen(product[i].description) - 1] = '\0'; // Remove the closing quote
-
-            // Check for double quotes at the end and replace with a single quote. Because descriptions can be like this: "Pleated Black Skirt, 38"""
-            size_t len = strlen(product[i].description);
-            if (len >= 2 && strcmp(&product[i].description[len - 2], "\"\"") == 0)
-            {
-                product[i].description[len - 2] = '"';
-                product[i].description[len - 1] = '\0';
-            }
-        }else{
-            strcpy(product[i].description, token);
-        } 
-
-        token = strtok(NULL, ",");
-        strcpy(product[i].category, token);
-
-        token = strtok(NULL, ",");
-        product[i].price = atof(token);
-
-        token = strtok(NULL, ",");
-        product[i].stockquantity = atoi(token);
-
-        i++;
-
-    }
-
-    //close the file
-    fclose(file);
-
-    i=0;
     while(i<=29){
 
         printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
@@ -358,93 +301,9 @@ void browseProducts(){
 // Function that adds product to shopping cart | Change return type to appropriate type
 void addToCart(){
 
-    //open file for reading
-    FILE *file = fopen("products.csv","r");
-
-    //check if file exists
-    if (file == NULL){
-        printf("Error: Unable to open the file.\n");
-        return;
-    }
-
     //variables
-    char line[1000]; 
-    char productNameOrID[50], category[50];
-    float price;
-    int choice, i=0, j=0,k=0, isFirstLine=1, quantity;
-
-    //get product database
-    struct products
-    {
-        char productID[10];
-        char productname[50];
-        char description[100];
-        char category[50];
-        float price;
-        int stockquantity;
-    }product [1000];
-
-
-    while(fgets(line, sizeof(line), file)){
-        
-        //skip the header
-        if (isFirstLine) {
-            isFirstLine = 0;
-            continue;
-        }
-
-        char *token = strtok(line, ",");
-        strcpy(product[i].productID, token);
-
-        token = strtok(NULL, ",");
-        strcpy(product[i].productname, token);
-
-        token = strtok(NULL, ","); 
-        if (token[0] == '"'){
-            // Handle quoted description
-            strcpy(product[i].description, token + 1); // Skip the opening quote
-            
-            token = strtok(NULL, ",");
-            strcat(product[i].description, ",");
-            strcat(product[i].description, token);
-
-            product[i].description[strlen(product[i].description) - 1] = '\0'; // Remove the closing quote
-
-            // Check for double quotes at the end and replace with a single quote. Because descriptions can be like this: "Pleated Black Skirt, 38"""
-            size_t len = strlen(product[i].description);
-            if (len >= 2 && strcmp(&product[i].description[len - 2], "\"\"") == 0)
-            {
-                product[i].description[len - 2] = '"';
-                product[i].description[len - 1] = '\0';
-            }
-        }else{
-            strcpy(product[i].description, token);
-        } 
-
-        token = strtok(NULL, ",");
-        strcpy(product[i].category, token);
-
-        token = strtok(NULL, ",");
-        product[i].price = atof(token);
-
-        token = strtok(NULL, ",");
-        product[i].stockquantity = atoi(token);
-
-        i++;
-
-    }
-
-    //close the file
-    fclose(file);
-
-    //shopping cart information
-    struct cart
-    {
-        char productID[10];
-        char productname[50];
-        float price;
-        int amount;
-    }InCart [1000];
+    char productNameOrID[50];
+    int choice, i=0, j=0,k=0, quantity;
 
     //Enter item of purchase
     printf("\nWhat would you like to purchase?\n");
