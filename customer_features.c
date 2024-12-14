@@ -49,8 +49,8 @@ int main(){
     addToCart();
     
     int i = 0;
-    while(i<=itemsInCart){
-        printf("\n%s %s %.2f %d %d\n",InCart[i].productID,InCart[i].productname,InCart[i].price,InCart[i].amount);
+    while(i<itemsInCart){
+        printf("\n%s %s %.2f %d\n",InCart[i].productID,InCart[i].productname,InCart[i].price,InCart[i].amount);
         i++;
     }
 
@@ -329,10 +329,12 @@ void addToCart(){
     printf("Please enter product name or ID: ");
 
     scanf("%[^\n]s",productNameOrID);
+    getchar();
 
-    printf("Please enter quantity of purhase: ");
+    printf("Please enter quantity of purchase: ");
 
     scanf("%d",&quantity);
+    getchar();
 
     //loop through product list
     i = 0;
@@ -383,7 +385,7 @@ void addToCart(){
                     InCart[itemsInCart].price = product[i].price;
                     InCart[itemsInCart].amount = quantity;
 
-                    printf("\n%d of items %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+                    printf("\n%d of item %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
                     match++;
                     itemsInCart++;
@@ -412,7 +414,7 @@ void addToCart(){
                 InCart[itemsInCart].price = product[i].price;
                 InCart[itemsInCart].amount = quantity;
                         
-                printf("\n%d of items %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+                printf("\n%d of item %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
                 itemsInCart++;
             }else{
