@@ -17,6 +17,7 @@ void applyCouponAtCheckout();
 //For initializing product database
 void productInformation();
 
+//Information of items in cart
 struct cart
 {
     char productID[10];
@@ -25,7 +26,10 @@ struct cart
     int amount;
 }InCart [1000];
 
-    //get product database
+//Will be used to keeptrack of items in cart, at the start of the program it will be 0
+int itemsInCart=0;
+
+//Information of products
 struct products
 {
     char productID[10];
@@ -40,11 +44,24 @@ struct products
 int main(){
 
     productInformation();
-    searchProduct();
+    addToCart();
+    addToCart();
+    addToCart();
+    
+    int i = 0;
+    while(i<=itemsInCart){
+        printf("\n%s %s %.2f %d %d\n",InCart[i].productID,InCart[i].productname,InCart[i].price,InCart[i].amount);
+        i++;
+    }
+
+    printf("\n%d",itemsInCart);
 }
 
+
+//Reads product file and adds product information to struct, should be done at start of program
 void productInformation(){
 
+    //opens file
     FILE *file = fopen("products.csv","r");
 
     //check if file exists
@@ -53,6 +70,7 @@ void productInformation(){
         return;
     }
 
+    //variables
     char line[1000];
     int i=0, isFirstLine=1;
 
@@ -289,6 +307,7 @@ void browseProducts(){
     //variables
     int i=0;
 
+    //loop to print out all products
     while(i<=29){
 
         printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
@@ -303,7 +322,7 @@ void addToCart(){
 
     //variables
     char productNameOrID[50];
-    int choice, i=0, j=0,k=0, quantity;
+    int choice, i=0, j=0, quantity, match=0;
 
     //Enter item of purchase
     printf("\nWhat would you like to purchase?\n");
@@ -315,78 +334,108 @@ void addToCart(){
 
     scanf("%d",&quantity);
 
-        //loop through product list
-        i = 0;
-        while(i<=30){
+    //loop through product list
+    i = 0;
+    while(i<=30){
 
-            if(strlen(productNameOrID)==strlen(product[i].productname)){
-                //variable to coampre category without modifying the actual struct data
-                char compareName[50];
-                char enteredName[50];
+        if(strlen(productNameOrID)==strlen(product[i].productname)){
+            //variable to coampre category without modifying the actual struct data
+            char compareName[50];
+            char enteredName[50];
 
-                //It takes the name of the current product name
-                strcpy(compareName, product[i].productname);
-                strcpy(enteredName, productNameOrID);
+            //It takes the name of the current product name
+            strcpy(compareName, product[i].productname);
+            strcpy(enteredName, productNameOrID);
 
-                //change entered product name to lower case to make it easier to compare to the other product name
-                j=0;
-                while(enteredName[j] != '\0'){
+            //change entered product name to lower case to make it easier to compare to the other product name
+            j=0;
+            while(enteredName[j] != '\0'){
 
-                    if(enteredName[j] >= 'A' && enteredName[j] <= 'Z' ){
+                if(enteredName[j] >= 'A' && enteredName[j] <= 'Z' ){
 
-                        enteredName[j]+=32;
-
-                    }
-                    j++;
-                }
-
-                //change current product category to lower case to prepare for the comparison
-                j=0;
-                while(compareName[j] != '\0'){
-
-                    if(compareName[j] >= 'A' && compareName[j] <= 'Z' ){
-
-                        compareName[j]+=32;
-
-                    }
-                    j++;
+                    enteredName[j]+=32;
 
                 }
-
-                //category comparisons, if it is the same, print out the information
-                if(strcmp(enteredName, compareName)==0){
-                    
-                    strcpy(InCart[k].productID, product[i].productID);
-                    strcpy(InCart[k].productname, product[i].productname);
-                    InCart[k].price = product[i].price;
-                    InCart[k].amount = quantity;
-
-                    printf("\n%d of items %s %s successfully added to cart\n",InCart[k].amount , InCart[k].productID, InCart[k].productname);
-
-                    k++;
-
-                    break;
-
-                } 
+                j++;
             }
 
-            if(strcmp(productNameOrID,product[i].productID) == 0){
+            //change current product category to lower case to prepare for the comparison
+            j=0;
+            while(compareName[j] != '\0'){
 
-                strcpy(InCart[k].productID, product[i].productID);
-                strcpy(InCart[k].productname, product[i].productname);
-                InCart[k].price = product[i].price;
-                InCart[k].amount = quantity;
+                if(compareName[j] >= 'A' && compareName[j] <= 'Z' ){
+
+                    compareName[j]+=32;
+
+                }
+                j++;
+            }
+
+            //Name comparisons, if it is the same, proceed
+            if(strcmp(enteredName, compareName)==0){
+
+                //Check if there are enough items in stock    
+                if(quantity<=product[i].stockquantity){
+
+                    //if there are enough items, add item to cart
+                    strcpy(InCart[itemsInCart].productID, product[i].productID);
+                    strcpy(InCart[itemsInCart].productname, product[i].productname);
+                    InCart[itemsInCart].price = product[i].price;
+                    InCart[itemsInCart].amount = quantity;
+
+                    printf("\n%d of items %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+
+                    match++;
+                    itemsInCart++;
                     
-                printf("\n%d of items %s %s successfully added to cart\n",InCart[k].amount , InCart[k].productID, InCart[k].productname);
+                }else{
 
-                k++;
+                    //if there are not enough items, print out error message
+                    printf("\nUnable to purchase, not enough in stock\n");
+
+                }    
 
                 break;
 
-            }
-
-            i++;         
+            } 
         }
+
+        //If product Ids are the same, proceed
+        if(strcmp(productNameOrID,product[i].productID) == 0){
+            
+            //Check if there are enough items in stock               
+            if(quantity<=product[i].stockquantity){
+
+                //if there are enough items, add item to cart                
+                strcpy(InCart[itemsInCart].productID, product[i].productID);
+                strcpy(InCart[itemsInCart].productname, product[i].productname);
+                InCart[itemsInCart].price = product[i].price;
+                InCart[itemsInCart].amount = quantity;
+                        
+                printf("\n%d of items %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+
+                itemsInCart++;
+            }else{
+
+                //if there are not enough items, print out error message
+                printf("\nUnable to purchase, not enough in stock\n");
+
+            }    
+
+            break;
+
+        }
+
+        i++;         
+    }
+
+    //If no products were found, print out error message
+    if(match==0){
+
+        printf("\nNo items found, unable to purchase\n");
+
+    }
+
 }
 
 // Function that calls for all items in cart | Change return type to appropriate type
