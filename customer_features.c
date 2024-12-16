@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 // include other necessary libraries including from other scripts
 
 
@@ -39,14 +40,17 @@ struct products
     char category[50];
     float price;
     int stockquantity;
+    int minimumThreshold;
+    int restockAmount;
+    char lastUpdated[20];
 }product [1000];
 
 //test
 int main(){
 
     productInformation();
-    addToCart();
-    addToCart();
+    //addToCart();
+    //addToCart();
     addToCart();
 
     viewCart();
@@ -117,6 +121,15 @@ void productInformation(){
 
         token = strtok(NULL, ",");
         product[i].stockquantity = atoi(token);
+
+        token = strtok(NULL, ","); // Get next piece
+        product[i].minimumThreshold = atoi(token); // minimumThreshold is an int, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next piece
+        product[i].restockAmount = atoi(token); // restockAmount is an int, so we need to convert it to ASCII
+
+        token = strtok(NULL, ","); // Get next piece
+        strcpy(product[i].lastUpdated, token); // lastUpdated is now whatever "token" was pointing at, "token" was pointing at the last piece of the string        
 
         i++;
 
@@ -560,7 +573,7 @@ void checkoutCart(){
     
     //variables
     float total=0, productTotal;
-    int choice, confirm, i=0;
+    int choice, confirm, i=0, j=0;
 
     //Calculates total value of items in cart
     while (i<itemsInCart){
@@ -605,6 +618,34 @@ void checkoutCart(){
                 done=1;
                 //update inventory
 
+                // Get the current date and time
+                time_t t = time(NULL);
+                struct tm tm = *localtime(&t);
+                char lastUpdated[20];
+                sprintf(lastUpdated, "%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+
+                i=0;
+                while(i<itemsInCart){
+
+                    while (j<30){
+                        
+                        if(strcmp(InCart[i].productID, product[j].productID)==0){
+
+                            product[j].stockquantity-=InCart[i].amount;
+                            strcpy(product[j].lastUpdated, lastUpdated);
+
+                            break;
+
+                        }
+
+                        j++;
+                    }
+                    
+                    i++;
+                }
+
+                updateInventoryAfterPurchase();
+
             }else if(confirm==2){
 
                 done=1;
@@ -631,7 +672,7 @@ void updateInventoryAfterPurchase(){
 
 
     //update the products file
-    FILE *file = fopen("products2.csv","r+");
+    FILE *file = fopen("products2.csv","w");
 
         //check if file exists
     if (file == NULL){
@@ -639,10 +680,20 @@ void updateInventoryAfterPurchase(){
         return;
     }
 
-    //variables
-    char line[1000];
-    int i=0, isFirstLine=1;
 
+    fprintf(file, "ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated\n");
+    for (int j = 0; j < 1000; j++){
+        fprintf(file, "%s,%s,%s,%s,%.2f,%d,%d,%d,%s\n",
+                product[j].productID, product[j].productname,
+                product[j].description, product[j].category,
+                product[j].price, product[j].stockquantity,
+                product[j].minimumThreshold, product[j].restockAmount,
+                product[j].lastUpdated);
+    }
+
+    fclose(file);
+
+    printf("\nFile successfully updated\n");
 
 }
 
