@@ -55,6 +55,8 @@ int main(){
         i++;
     }
 
+    viewCart();
+
     printf("\n%d",itemsInCart);
 }
 
@@ -327,7 +329,7 @@ void addToCart(){
 
     //Enter item of purchase
     printf("\nWhat would you like to purchase?\n");
-    printf("Please enter product name or ID: ");
+    printf("\nPlease enter product name or ID: ");
 
     scanf("%[^\n]s",productNameOrID);
     getchar();
@@ -543,7 +545,18 @@ void addToCart(){
 
 // Function that calls for all items in cart | Change return type to appropriate type
 void viewCart(){
-    // Code here
+    //variables
+    int i=0;
+
+    //loop for printing everything in cart
+    while(i<itemsInCart){
+
+        printf("%d. Product ID: %s | Product name: %-30s | Amount: %-10d | Product total: %-8.2f Baht\n", (i+1), InCart[i].productID, InCart[i].productname, InCart[i].amount, (InCart[i].price*InCart[i].amount));
+
+        i++;
+
+    }
+
 }
 
 // Function that proceeds to checkout point (calculates total and prompts to use coupon) | Change return type to appropriate type
