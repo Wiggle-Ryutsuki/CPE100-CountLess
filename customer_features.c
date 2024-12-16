@@ -561,7 +561,46 @@ void viewCart(){
 
 // Function that proceeds to checkout point (calculates total and prompts to use coupon) | Change return type to appropriate type
 void checkoutCart(){
-    // Code here
+    
+    //variables
+    float total=0, productTotal;
+    int choice, selection, i=0;
+
+    //Calculates total value of items in cart
+    while (i<itemsInCart){
+        
+        productTotal = (InCart[i].amount*InCart[i].price);
+
+        total+=productTotal;
+
+        i++;
+
+    }
+
+    printf("\nYour total is %.2f\n", total);
+
+    printf("\nWould you like to use your coupon?\n");
+    printf("Yes: Enter 1\nNo: Enter 2\n");
+
+    scanf("%d", choice);
+
+    //Slection, use coupon or no coupon
+    switch (choice)
+    {
+    case 1:
+        
+        break;
+    
+    case 2:
+
+
+
+        break;
+
+    default:
+        break;
+    }
+
 }
 
 // Function that updates inventory | Change return type to appropriate type
