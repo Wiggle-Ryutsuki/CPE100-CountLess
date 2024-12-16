@@ -48,14 +48,10 @@ int main(){
     addToCart();
     addToCart();
     addToCart();
-    
-    int i = 0;
-    while(i<itemsInCart){
-        printf("\n%s %s %.2f %d\n",InCart[i].productID,InCart[i].productname,InCart[i].price,InCart[i].amount);
-        i++;
-    }
 
     viewCart();
+
+    checkoutCart();
 
     printf("\n%d",itemsInCart);
 }
@@ -65,7 +61,7 @@ int main(){
 void productInformation(){
 
     //opens file
-    FILE *file = fopen("products.csv","r");
+    FILE *file = fopen("products2.csv","r");
 
     //check if file exists
     if (file == NULL){
@@ -564,7 +560,7 @@ void checkoutCart(){
     
     //variables
     float total=0, productTotal;
-    int choice, selection, i=0;
+    int choice, confirm, i=0;
 
     //Calculates total value of items in cart
     while (i<itemsInCart){
@@ -582,7 +578,7 @@ void checkoutCart(){
     printf("\nWould you like to use your coupon?\n");
     printf("Yes: Enter 1\nNo: Enter 2\n");
 
-    scanf("%d", choice);
+    scanf("%d",&choice);
 
     //Slection, use coupon or no coupon
     switch (choice)
@@ -593,7 +589,34 @@ void checkoutCart(){
     
     case 2:
 
+        printf("\nNo coupon selected\n");
+        
+        int done=0;
+            
+        while(done==0){
 
+            printf("\nConfirm purchase?\n");
+
+            printf("\nConfirm: Enter 1\nCancel: Enter 2\n");
+            scanf("%d",&confirm);
+
+            if(confirm==1){
+
+                done=1;
+                //update inventory
+
+            }else if(confirm==2){
+
+                done=1;
+                printf("\nOrder canceled\n");
+
+            }else{
+
+                printf("\nPlease enter valid input\n");
+
+            }
+
+        }
 
         break;
 
@@ -605,7 +628,22 @@ void checkoutCart(){
 
 // Function that updates inventory | Change return type to appropriate type
 void updateInventoryAfterPurchase(){
-    // Code here
+
+
+    //update the products file
+    FILE *file = fopen("products2.csv","r+");
+
+        //check if file exists
+    if (file == NULL){
+        printf("Error: Unable to open the file.\n");
+        return;
+    }
+
+    //variables
+    char line[1000];
+    int i=0, isFirstLine=1;
+
+
 }
 
 // Function that applies coupon | Change return type to appropriate type
