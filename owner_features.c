@@ -13,7 +13,7 @@ void viewProduct();
 void editProduct();
 void deleteProduct();
 void restockProduct();
-void logAction();
+void logAction(const char *actionType, const char *productName, const char *category, const char *discountCode, float price, int stockQuantity);
 void createCoupon();
 void validateCoupon();
 void applyCoupon();
@@ -82,12 +82,15 @@ void addProduct()
 
     fclose(file); // Close the file
     printf("Product added successfully.\n"); // Give feedback
+
+    // Log the action
+    logAction("Product Added", productName, category, "-", price, stockQuantity);
 }
 
 // Function that views a products information | Change return type to appropriate type
 void viewProduct(){
     // Open the file in read mode
-    FILE *file = fopen("products2.csv", "r");
+    FILE *file = fopen("products.csv", "r");
 
     // Check if file exists
     if (file == NULL)
@@ -117,7 +120,7 @@ void viewProduct(){
 
         // Use strtok to handle fields
         // strtok is a function that can split strings into multiple pieces called tokens
-        // The first argument for strtok is a pointer, the second argument are delimiters, basically character to look for to make a split in a string, in this case it's a comma
+        // The first argument for strtok is a pointer, the second argument are delimiters, basically characters to look for to make a split in a string, in this case it's a comma
         char *token = strtok(line, ",");
         strcpy(productID, token); //productionID is now whatever "token" was pointing at, "token" was pointing at whatever was before the first comma.
 
@@ -173,26 +176,493 @@ void viewProduct(){
     }
 
     fclose(file); // Close the file
+
+    // Log the action (Privacy invasion tho)
+    logAction("Product Viewed", "-", "-", "-", 0.0, 0);
 }
 
 // Function that edits a products information | Change return type to appropriate type
-void editProduct(){
-    // Code here
+void editProduct()
+{
+    // Open the file in read mode
+    FILE *file = fopen("products.csv", "r");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Temporary storage for product data
+    char lines[1000][1024];
+    int lineCount = 0;
+
+    // Read all lines from the file
+    while (fgets(lines[lineCount], sizeof(lines[lineCount]), file))
+    {
+        lineCount++;
+    }
+    fclose(file);
+
+    // Display products for selection
+    printf("Select a product to edit by entering the Product ID:\n");
+    viewProduct();
+
+    // Get user selection
+    char selectedProductID[10];
+    printf("Enter the Product ID of the product you want to edit: ");
+    fgets(selectedProductID, sizeof(selectedProductID), stdin);
+    selectedProductID[strcspn(selectedProductID, "\n")] = 0; // Remove newline character
+
+    // Find the product by ID
+    int choice = -1;
+    for (int i = 1; i < lineCount; i++)
+    {
+        char currentProductID[10];
+        sscanf(lines[i], "%[^,]", currentProductID);
+        if (strcmp(currentProductID, selectedProductID) == 0)
+        {
+            choice = i;
+            break;
+        }
+    }
+
+    if (choice == -1)
+    {
+        printf("Product ID not found.\n");
+        return;
+    }
+
+    // Parse the selected line
+    char productID[10], productName[50], description[100], category[50], lastUpdated[20];
+    int stockQuantity, minimumThreshold, restockAmount;
+    float price;
+
+    // Handle descriptions with commas
+    char *token = strtok(lines[choice], ",");
+    strcpy(productID, token);
+
+    token = strtok(NULL, ",");
+    strcpy(productName, token);
+
+    token = strtok(NULL, ",");
+    if (token[0] == '"')
+    {
+        strcpy(description, token + 1);
+        while (token[strlen(token) - 1] != '"')
+        {
+            token = strtok(NULL, ",");
+            strcat(description, ",");
+            strcat(description, token);
+        }
+        description[strlen(description) - 1] = '\0'; // Remove the closing quote
+    }
+    else
+    {
+        strcpy(description, token);
+    }
+
+    token = strtok(NULL, ",");
+    strcpy(category, token);
+
+    token = strtok(NULL, ",");
+    price = atof(token);
+
+    token = strtok(NULL, ",");
+    stockQuantity = atoi(token);
+
+    token = strtok(NULL, ",");
+    minimumThreshold = atoi(token);
+
+    token = strtok(NULL, ",");
+    restockAmount = atoi(token);
+
+    token = strtok(NULL, ",");
+    strcpy(lastUpdated, token);
+
+    // Prompt user for new details
+    char input[100];
+
+    printf("Enter new Product Name (current: %s) or press Enter to keep: ", productName);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        strcpy(productName, input);
+        productName[strcspn(productName, "\n")] = 0; // Remove newline character
+    }
+
+    printf("Enter new Description (current: %s) or press Enter to keep: ", description);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        strcpy(description, input);
+        description[strcspn(description, "\n")] = 0;
+    }
+
+    printf("Enter new Category (current: %s) or press Enter to keep: ", category);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        strcpy(category, input);
+        category[strcspn(category, "\n")] = 0;
+    }
+
+    printf("Enter new Price (current: %.2f) or press Enter to keep: ", price);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        sscanf(input, "%f", &price);
+    }
+
+    printf("Enter new Stock Quantity (current: %d) or press Enter to keep: ", stockQuantity);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        sscanf(input, "%d", &stockQuantity);
+    }
+
+    printf("Enter new Minimum Threshold (current: %d) or press Enter to keep: ", minimumThreshold);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        sscanf(input, "%d", &minimumThreshold);
+    }
+
+    printf("Enter new Restock Amount (current: %d) or press Enter to keep: ", restockAmount);
+    fgets(input, sizeof(input), stdin);
+    if (input[0] != '\n')
+    {
+        sscanf(input, "%d", &restockAmount);
+    }
+
+    // Update the last updated time
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(lastUpdated, "%02d-%02d-%02d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+
+    // Update the selected line
+    if (strchr(description, ',') != NULL)
+    { // Check if the description contains a comma
+        sprintf(lines[choice], "%s,%s,\"%s\",%s,%.2f,%d,%d,%d,%s\n",
+                productID, productName, description, category, price,
+                stockQuantity, minimumThreshold, restockAmount, lastUpdated);
+    }
+    else
+    {
+        sprintf(lines[choice], "%s,%s,%s,%s,%.2f,%d,%d,%d,%s\n",
+                productID, productName, description, category, price,
+                stockQuantity, minimumThreshold, restockAmount, lastUpdated);
+    }
+    // Write the updated data back to the file
+    file = fopen("products.csv", "w");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+    for (int i = 0; i < lineCount; i++)
+    {
+        fputs(lines[i], file);
+    }
+    fclose(file);
+
+    printf("Product updated successfully.\n");
+
+    // Log the action
+    logAction("Product Edited", productName, category, "-", price, stockQuantity);
 }
 
 // Function that deletes a product | Change return type to appropriate type
-void deleteProduct(){
-    // Code here
+void deleteProduct()
+{
+    // Open the file in read mode
+    FILE *file = fopen("products.csv", "r");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Temporary storage for product data
+    char lines[1000][1024];
+    int lineCount = 0;
+
+    // Read all lines from the file
+    while (fgets(lines[lineCount], sizeof(lines[lineCount]), file))
+    {
+        lineCount++;
+    }
+    fclose(file);
+
+    // Display products for selection
+    printf("Select a product to delete by entering the Product ID:\n");
+    for (int i = 1; i < lineCount; i++)
+    {
+        printf("%s", lines[i]); // Display each product
+    }
+
+    // Get user selection
+    char input[15]; // Increased size to accommodate extra character
+    printf("\nEnter the Product ID of the product you want to delete: ");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = 0; // Remove newline character
+
+    // Check for force delete character
+    int forceDelete = 0;
+    char selectedProductID[10];
+    if (strstr(input, " F") != NULL)
+    { // Check if " F" is in the input
+        sscanf(input, "%s", selectedProductID);
+        forceDelete = 1;
+    }
+    else
+    {
+        sscanf(input, "%s", selectedProductID);
+    }
+
+    // Find the product by ID
+    int choice = -1;
+    char productName[50], category[50];
+    for (int i = 1; i < lineCount; i++)
+    {
+        char currentProductID[10];
+        sscanf(lines[i], "%[^,]", currentProductID);
+        if (strcmp(currentProductID, selectedProductID) == 0)
+        {
+            choice = i;
+
+            // Extract productName and category
+            char *token = strtok(lines[i], ",");
+            token = strtok(NULL, ",");  // Skip productID
+            strcpy(productName, token); // Get productName
+            token = strtok(NULL, ",");  // Skip description
+            token = strtok(NULL, ",");  // Get category
+            strcpy(category, token);
+
+            break;
+        }
+    }
+
+    if (choice == -1)
+    {
+        printf("Product ID not found.\n");
+        return;
+    }
+
+    // Confirmation step
+    if (!forceDelete)
+    {
+        char confirmation[4];
+        printf("Are you sure you want to delete this product? (yes/no): ");
+        fgets(confirmation, sizeof(confirmation), stdin);
+        confirmation[strcspn(confirmation, "\n")] = 0; // Remove newline character
+
+        if (strcmp(confirmation, "yes") != 0)
+        {
+            printf("Deletion cancelled.\n");
+            return;
+        }
+    }
+
+    // Write the updated data back to the file, excluding the deleted product
+    file = fopen("products.csv", "w");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Write the header
+    fputs(lines[0], file);
+
+    // Write all lines except the one to be deleted
+    for (int i = 1; i < lineCount; i++)
+    {
+        if (i != choice)
+        {
+            fputs(lines[i], file);
+        }
+    }
+    fclose(file);
+
+    printf("Product deleted successfully.\n");
+
+    // Log the action
+    logAction("Product Deleted", productName, category, "-", 0.0, 0);
 }
 
 // Function that restocks a product | Change return type to appropriate type
-void restockProduct(){
-    // Code here
+void restockProduct()
+{
+    // Open the file in read mode
+    FILE *file = fopen("products.csv", "r");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Temporary storage for product data
+    char lines[1000][1024];
+    int lineCount = 0;
+
+    // Read all lines from the file
+    while (fgets(lines[lineCount], sizeof(lines[lineCount]), file))
+    {
+        lineCount++;
+    }
+    fclose(file);
+
+    // Display products for selection
+    printf("Select a product to restock by entering the Product ID:\n");
+    for (int i = 1; i < lineCount; i++)
+    {
+        printf("%s", lines[i]); // Display each product
+    }
+
+    // Get user selection
+    char selectedProductID[10];
+    printf("\nEnter the Product ID of the product you want to restock: ");
+    fgets(selectedProductID, sizeof(selectedProductID), stdin);
+    selectedProductID[strcspn(selectedProductID, "\n")] = 0; // Remove newline character
+
+    // Find the product by ID
+    int choice = -1;
+    for (int i = 1; i < lineCount; i++)
+    {
+        char currentProductID[10];
+        sscanf(lines[i], "%[^,]", currentProductID);
+        if (strcmp(currentProductID, selectedProductID) == 0)
+        {
+            choice = i;
+            break;
+        }
+    }
+
+    if (choice == -1)
+    {
+        printf("Product ID not found.\n");
+        return;
+    }
+
+    // Parse the selected line
+    char productID[10], productName[50], description[100], category[50], lastUpdated[20];
+    int stockQuantity, minimumThreshold;
+    float price;
+
+    // Handle descriptions with commas
+    char *token = strtok(lines[choice], ",");
+    strcpy(productID, token);
+
+    token = strtok(NULL, ",");
+    strcpy(productName, token);
+
+    token = strtok(NULL, ",");
+    if (token[0] == '"')
+    {
+        strcpy(description, token + 1);
+        while (token[strlen(token) - 1] != '"')
+        {
+            token = strtok(NULL, ",");
+            strcat(description, ",");
+            strcat(description, token);
+        }
+        description[strlen(description) - 1] = '\0'; // Remove the closing quote
+    }
+    else
+    {
+        strcpy(description, token);
+    }
+
+    token = strtok(NULL, ",");
+    strcpy(category, token);
+
+    token = strtok(NULL, ",");
+    price = atof(token);
+
+    token = strtok(NULL, ",");
+    stockQuantity = atoi(token);
+
+    token = strtok(NULL, ",");
+    minimumThreshold = atoi(token);
+
+    // Ask user for the restock amount
+    int restockAmount;
+    printf("Enter the amount to restock: ");
+    scanf("%d", &restockAmount);
+
+    // Update stock quantity and last updated date
+    stockQuantity += restockAmount;
+
+    // Get the current date and time
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(lastUpdated, "%02d-%02d-%02d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+
+    // Update the selected line without changing the RestockAmount
+    if (strchr(description, ',') != NULL)
+    { // Check if the description contains a comma
+        sprintf(lines[choice], "%s,%s,\"%s\",%s,%.2f,%d,%d,%s\n",
+                productID, productName, description, category, price,
+                stockQuantity, minimumThreshold, lastUpdated);
+    }
+    else
+    {
+        sprintf(lines[choice], "%s,%s,%s,%s,%.2f,%d,%d,%s\n",
+                productID, productName, description, category, price,
+                stockQuantity, minimumThreshold, lastUpdated);
+    }
+
+    // Write the updated data back to the file
+    file = fopen("products.csv", "w");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+    for (int i = 0; i < lineCount; i++)
+    {
+        fputs(lines[i], file);
+    }
+    fclose(file);
+
+    printf("Product restocked successfully.\n");
+
+    // Log the action
+    logAction("Product Restocked", productName, category, "-", price, stockQuantity);
 }
 
 // Function that logs action | Change return type to appropriate type
-void logAction(){
-    // Code here
+// Function to log actions to logs.csv
+void logAction(const char *actionType, const char *productName, const char *category, const char *discountCode, float price, int stockQuantity)
+{
+    // Open the logs.csv file in append mode
+    FILE *file = fopen("logs.csv", "a");
+    if (file == NULL)
+    {
+        printf("Error opening logs file!\n");
+        return;
+    }
+
+    // Get the current date and time
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char timestamp[20];
+    sprintf(timestamp, "%02d/%02d/%d %02d:%02d", tm.tm_mon + 1, tm.tm_mday, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
+
+    // Write the log entry to the file
+    /*
+    Examples:
+    logAction("Product Updated", "Pen", "Stationery", "-", 5.00, 100);
+    logAction("Product Restocked", "Sketchbook", "Art Supplies", "-", 20.00, 50);
+    logAction("Purchase Completed", "Textbook", "Educational", "STRAIGHTA5", 300.00, 64);
+    logAction("Discount Created", "-", "Electronics", "FALL20", 0.00, 0);
+
+    */
+    fprintf(file, "%s,%s,Owner,%s,%s,%s,%.2f,%d\n", timestamp, actionType, productName, category, discountCode, price, stockQuantity);
+
+    // Close the file
+    fclose(file);
+    //printf("Action logged successfully.\n");
 }
 
 // Function that creates coupon | Change return type to appropriate type
@@ -243,5 +713,5 @@ void getLastProductID(char *lastID)
 // Test
 int main(void)
 {
-    viewProduct();
+    addProduct();
 }

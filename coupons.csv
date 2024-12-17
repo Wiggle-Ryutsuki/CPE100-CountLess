@@ -1,0 +1,11 @@
+Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description
+SUMMER10,10,Percentage,2024-08-31,Get 10% off your summer purchases.
+FLAT50,50,Flat Value,2024-09-30,Flat ฿50 discount on orders above ฿200.
+WELCOME15,15,Percentage,2024-12-31,New user welcome offer with 15% off.
+SAVE20,20,Flat Value,2024-10-15,Save ฿20 on all orders over ฿100.
+HOLIDAY5,5,Percentage,2024-12-01,5% discount for holiday season shopping.
+SPRING25,25,Percentage,2024-09-10,Enjoy 25% off spring collections.
+FLASH75,75,Flat Value,2024-08-15,Flat ฿75 off during the flash sale event.
+WEEKEND30,30,Percentage,2024-07-20,30% discount for weekend shopping.
+MONSOON20,20,Percentage,2024-08-01,Monsoon offer: 20% off on rainwear.
+DEAL40,40,Flat Value,2024-09-05,Grab ฿40 off on your next big purchase.
