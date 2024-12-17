@@ -30,6 +30,8 @@ struct cart
 
 //Will be used to keeptrack of items in cart, at the start of the program it will be 0
 int itemsInCart=0;
+//Will be used to keep track of total amount of products for loops, start at 0
+int itemsInProductsList=0;
 
 //Information of products
 struct products
@@ -52,20 +54,18 @@ int main(){
     productInformation();
 
     //browseProducts();
-    searchProduct();
-    searchProduct();
     //searchProduct();
-    //addToCart();
-    //addToCart();
+    //searchProduct();
+    //searchProduct();
+    addToCart();
+    addToCart();
     //addToCart();
 
     //viewCart();
     //browseProducts();
     //searchProduct();
 
-    //checkoutCart();
-
-
+    checkoutCart();
 
     //printf("\n%d",itemsInCart);
 }
@@ -145,6 +145,7 @@ void productInformation(){
         token = strtok(NULL, ","); // Get next piece
         strcpy(product[i].lastUpdated, token); // lastUpdated is now whatever "token" was pointing at, "token" was pointing at the last piece of the string        
 
+        itemsInProductsList++;
         i++;
 
     }
@@ -159,16 +160,16 @@ void productInformation(){
 void searchProduct(){
 
     //variables
-    char productName[50], category[50];
+    char productNameOrID[50], category[50];
     float uppper_price,lower_price;
     int choice, i=0, j=0, done=0, match=0;
 
     //user interface to select search criteria
-    printf("\n _______________________________");
-    printf("\n|          Search Menu          |\n");
-    printf("|_______________________________|");
-    printf("\n| -Search by name     : Enter 1 |\n|                               |\n| -Search by category : Enter 2 |\n|                               |\n| -Search by price    : Enter 3 |\n");
-    printf("|_______________________________|\n");
+    printf("\n _________________________________");
+    printf("\n|           Search Menu           |\n");
+    printf("|_________________________________|");
+    printf("\n| -Search by name or ID : Enter 1 |\n|                                 |\n| -Search by category   : Enter 2 |\n|                                 |\n| -Search by price      : Enter 3 |\n");
+    printf("|_________________________________|\n");
 
     //receive right input
     while(done==0){
@@ -196,34 +197,36 @@ void searchProduct(){
         done=1;
         //Enter product name
         printf("\n<------Search by name selected------>\n");
-        printf("\n  > Enter product name: ");
-        scanf("%[^\n]s",productName);
+        printf("\n  > Enter product name or ID: ");
+        scanf("%[^\n]s",productNameOrID);
         getchar();
 
         printf("\n______________________________________________________________________________________________________________________________________________________________\n");
-        printf("\n                                                                     Search results for %s\n", productName);
+        printf("\n                                                                     Search results for %s\n", productNameOrID);
         printf("______________________________________________________________________________________________________________________________________________________________");
         printf("\n\n");                                                                     
         //loop through the names
         i = 0;
-        while(i<=30){
+        while(i<itemsInProductsList){
 
             //If string lentghs are the same, then it can be the product we are looking for            
-            if(strlen(productName)==strlen(product[i].productname)){
+            if(strlen(productNameOrID)==strlen(product[i].productname)){
 
                 //variable to compare the product name without modifying the actual struct data
                 char compareName[50];
+                char enteredName[50];
 
                 //It takes the name of the current product
                 strcpy(compareName, product[i].productname);
+                strcpy(enteredName, productNameOrID);
 
                 //change entered product name to lower case to make it easier to compare to the other product name
                 j=0;
-                while(productName[j] != '\0'){
+                while(enteredName[j] != '\0'){
 
-                    if(productName[j] >= 'A' && productName[j] <= 'Z' ){
+                    if(enteredName[j] >= 'A' && enteredName[j] <= 'Z' ){
 
-                        productName[j]+=32;
+                        enteredName[j]+=32;
 
                     }
                     j++;
@@ -243,10 +246,23 @@ void searchProduct(){
                 }
 
                 //product name comparisons, if it is the same, print out the information
-                if(strcmp(productName, compareName)==0){
+                if(strcmp(enteredName, compareName)==0){
                     match++;
                     printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+
+                    break;
+
                 }
+
+            }
+
+            //If product Ids are the same, proceed
+            if(strcmp(productNameOrID,product[i].productID) == 0){
+                
+                match++;
+                printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);    
+                
+                break;
 
             }
 
@@ -271,7 +287,7 @@ void searchProduct(){
         printf("\n\n");
         //loop through product list
         i = 0;
-        while(i<=30){
+        while(i<itemsInProductsList){
 
             //If string lentghs are the same, then it can be the category we are looking for
             if(strlen(category)==strlen(product[i].category)){
@@ -345,7 +361,7 @@ void searchProduct(){
 
         //loop through the product list
         i = 0;
-        while(i<=30){
+        while(i<itemsInProductsList){
 
             //check if prices are in range
             if(product[i].price<=uppper_price && product[i].price>=lower_price){
@@ -372,7 +388,7 @@ void searchProduct(){
 
     if(match==0){
 
-        printf("   -No items found...\n");
+        printf(" ....No items found....\n");
 
     }
 
@@ -391,7 +407,7 @@ void browseProducts(){
     printf("\nProduct ID |          Product name          |                  Description                  |      Price      |  Remaining\n");
     printf("___________________________________________________________________________________________________________________________\n");
     //loop to print out all products
-    while(i<=29){
+    while(i<itemsInProductsList){
 
         printf(" %-9s | %-30s | %-45s | %-10.2f Baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
 
@@ -408,22 +424,22 @@ void addToCart(){
     int choice, i=0, j=0, k=0, quantity, match=0, AlreadyInCart=0, done=0;
 
     //Enter item of purchase
-    printf("\nWhat would you like to add to cart?\n");
-    printf("\nPlease enter product name or ID: ");
+    printf("\n<------What would you like to add to cart?------>\n");
+    printf("\n  > Please enter product name or ID: ");
 
     scanf("%[^\n]s",productNameOrID);
     getchar();
 
     while(done==0){
 
-        printf("\nPlease enter quantity of purchase: ");
+        printf("  > Please enter quantity of purchase: ");
 
         scanf("%d",&quantity);
         getchar();
 
         if(quantity<=0){
 
-            printf("\nPlease enter valid amount\n");
+            printf("\n<<---------Please enter valid amount!--------->>\n");
 
         }else{
 
@@ -435,7 +451,7 @@ void addToCart(){
 
     //loop through product list
     i = 0;
-    while(i<=30){
+    while(i<itemsInProductsList){
 
         //check if item already in cart
         for(j=0;j<itemsInCart;j++){
@@ -480,18 +496,17 @@ void addToCart(){
                     match++;
                     AlreadyInCart=1;
                     //Check if there are enough items in stock    
-                    printf("\n%d\n",InCart[j].stock);
                     if((quantity + InCart[j].amount) <= InCart[j].stock){
 
                         //if there are enough items, add item to cart
                         InCart[j].amount += quantity;
 
-                        printf("\n%d of item %s %s successfully added to cart\n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
+                        printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
                         
                     }else{
 
                         //if there are not enough items, print out error message
-                        printf("\nUnable to purchase, not enough in stock\n");
+                        printf("\n<<---------Unable to purchase, not enough in stock--------->>\n");
 
                     }    
 
@@ -510,12 +525,12 @@ void addToCart(){
                     //if there are enough items, add item to cart                
                     InCart[j].amount+=quantity;
                             
-                    printf("\n%d of item %s %s successfully added to cart\n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
+                    printf("\n  > %d of item %s %s successfully added to cart < \n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
 
                 }else{
 
                     //if there are not enough items, print out error message
-                    printf("\nUnable to purchase, not enough in stock\n");
+                    printf("\n<<---------Unable to purchase, not enough in stock--------->\n");
 
                 }    
 
@@ -531,7 +546,6 @@ void addToCart(){
             break;
 
         }
-
 
         if(strlen(productNameOrID)==strlen(product[i].productname)){
             //variable to coampre category without modifying the actual struct data
@@ -580,14 +594,14 @@ void addToCart(){
                     InCart[itemsInCart].amount = quantity;
                     InCart[itemsInCart].stock = product[i].stockquantity;                    
 
-                    printf("\n%d of item %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+                    printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
                     itemsInCart++;
                     
                 }else{
 
                     //if there are not enough items, print out error message
-                    printf("\nUnable to purchase, not enough in stock\n");
+                    printf("\n<<--------Unable to purchase, not enough in stock--------->>\n");
 
                 }    
 
@@ -610,14 +624,14 @@ void addToCart(){
                 InCart[itemsInCart].amount = quantity;
                 InCart[itemsInCart].stock = product[i].stockquantity;
                         
-                printf("\n%d of item %s %s successfully added to cart\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
+                printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
                 itemsInCart++;
 
             }else{
 
                 //if there are not enough items, print out error message
-                printf("\nUnable to purchase, not enough in stock\n");
+                printf("\n<<---------Unable to purchase, not enough in stock--------->>\n");
 
             }    
 
@@ -631,7 +645,7 @@ void addToCart(){
     //If no products were found, print out error message
     if(match==0){
 
-        printf("\nNo items found, unable to purchase\n");
+        printf("\n<---------No items found, unable to purchase--------->\n");
 
     }
 
@@ -642,14 +656,21 @@ void viewCart(){
     //variables
     int i=0;
 
+    printf("\n___________________________________________________________________________________________________________________________\n");
+    printf("\n                                                     Items in Cart\n");
+    printf("___________________________________________________________________________________________________________________________");
+    printf("\n\n");
+
     //loop for printing everything in cart
     while(i<itemsInCart){
 
-        printf("%d. Product ID: %s | Product name: %-30s | Amount: %-10d | Product total: %-8.2f Baht\n", (i+1), InCart[i].productID, InCart[i].productname, InCart[i].amount, (InCart[i].price*InCart[i].amount));
+        printf("%4d. Product ID: %s | Product name: %-30s | Amount: %-10d | Product total: %-8.2f Baht\n", (i+1), InCart[i].productID, InCart[i].productname, InCart[i].amount, (InCart[i].price*InCart[i].amount));
 
         i++;
 
     }
+
+    printf("\n___________________________________________________________________________________________________________________________\n");
 
 }
 
@@ -658,9 +679,27 @@ void checkoutCart(){
     
     //variables
     float total=0, productTotal;
-    int choice, confirm, i=0, j=0;
+    int choice, confirm, i=0, j=0, valid=0;
+
+    printf("\n\n                                       -----List of Purchasing Items-----");
+    printf("\n________________________________________________________________________________________________________________\n");
+    printf("\nItem No. | Product ID |          Product name           |    Price per unit    |  Amount\n");
+    printf("_________________________________________________________________________________________________________________\n");
+    printf("\n");
+
+    //loop for printing everything in cart
+    while(i<itemsInCart){
+
+        printf("%5d.   |    %s     | %-30s | %-13.2f Baht   | %5d \n", (i+1), InCart[i].productID, InCart[i].productname,InCart[i].price, InCart[i].amount);
+
+        i++;
+
+    }
+
+    printf("_________________________________________________________________________________________________________________\n");
 
     //Calculates total value of items in cart
+    i=0;
     while (i<itemsInCart){
         
         productTotal = (InCart[i].amount*InCart[i].price);
@@ -671,12 +710,27 @@ void checkoutCart(){
 
     }
 
-    printf("\nYour total is %.2f\n", total);
+    printf("\n  >>> Your total is %.2f Baht\n", total);
 
-    printf("\nWould you like to use your coupon?\n");
-    printf("Yes: Enter 1\nNo: Enter 2\n");
+    printf("\n<------Would you like to use your coupon?------>\n");
+    printf("\n  -Yes: Enter 1\n  -No : Enter 2\n");
+    printf("<---------------------------------------------->\n");
 
-    scanf("%d",&choice);
+    while(valid==0){
+        printf("\n  > Use coupon?: ");
+        scanf("%d",&choice);
+
+        if(choice==1 || choice){
+
+            valid = 1;
+
+        }else{
+
+            printf("\n<<---------Please enter valid input!--------->>\n");
+
+        }
+
+    }
 
     //Slection, use coupon or no coupon
     switch (choice)
@@ -687,21 +741,21 @@ void checkoutCart(){
     
     case 2:
 
-        printf("\nNo coupon selected\n");
+        printf("\n  > No coupon selected <\n");
         
         int done=0;
             
         while(done==0){
 
-            printf("\nConfirm purchase?\n");
+            printf("\n<------Confirm purchase?------>\n");
+            printf("\n  - Confirm: Enter 1\n  - Cancel : Enter 2\n");
 
-            printf("\nConfirm: Enter 1\nCancel: Enter 2\n");
+            printf("\n  > Confirm?: ");
             scanf("%d",&confirm);
 
             if(confirm==1){
 
                 done=1;
-                //update inventory
 
                 // Get the current date and time
                 time_t t = time(NULL);
@@ -712,7 +766,7 @@ void checkoutCart(){
                 i=0;
                 while(i<itemsInCart){
 
-                    while (j<30){
+                    while (j<itemsInProductsList){
                         
                         if(strcmp(InCart[i].productID, product[j].productID)==0){
 
@@ -734,11 +788,12 @@ void checkoutCart(){
             }else if(confirm==2){
 
                 done=1;
-                printf("\nOrder canceled\n");
+                printf("\n  > Order canceled <\n");
+                printf("_________________________________________________________________________________________________________________\n");
 
             }else{
 
-                printf("\nPlease enter valid input\n");
+                printf("\n<----------Please enter valid input!--------->\n");
 
             }
 
@@ -747,6 +802,9 @@ void checkoutCart(){
         break;
 
     default:
+
+        printf("\n<----------Please enter valid input!(Order Cancled)--------->\n");
+
         break;
     }
 
@@ -767,7 +825,7 @@ void updateInventoryAfterPurchase(){
 
 
     fprintf(file,"ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated\n");
-    for (int j = 0; j < 30; j++){
+    for (int j = 0; j < itemsInProductsList; j++){
         fprintf(file,"%s,%s,%s,%s,%.2f,%d,%d,%d,%s",
                 product[j].productID, product[j].productname,
                 product[j].actualDescription, product[j].category,
@@ -778,7 +836,12 @@ void updateInventoryAfterPurchase(){
 
     fclose(file);
 
-    printf("\nPurchase successful\n");
+
+    //Closing message
+    printf("\n\n__________________________________");
+    printf("\n\n    >> Purchase successful! <<\n");
+    printf("\n >> Thank you for your patronage <<");
+    printf("\n__________________________________");
 
 }
 
