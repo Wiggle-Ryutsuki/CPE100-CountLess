@@ -361,10 +361,14 @@ void browseProducts(){
     //variables
     int i=0;
 
+    //print out list header
+    printf("\n___________________________________________________________________________________________________________________________\n");
+    printf("\nProduct ID |          Product name          |                  Description                  |      Price      |  Remaining\n");
+    printf("___________________________________________________________________________________________________________________________\n");
     //loop to print out all products
     while(i<=29){
 
-        printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+        printf(" %-9s | %-30s | %-45s | %-10.2f Baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
 
         i++;
     }
