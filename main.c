@@ -1,8 +1,57 @@
 // This script is for running and testing the entire program
 
 #include <stdio.h>
+#include "customer_features.h"
 // include other necessary libraries including from other scripts
 
-int main(void){
-    printf("Hello, World!");
+int main(void) {
+    int choice;
+    int continueShopping = 1;
+
+    // Step 1: Initialize product database
+    printf("Loading product information...\n");
+    productInformation();
+    printf("Product information loaded successfully!\n");
+
+    // Customer interaction loop
+    while (continueShopping) {
+        printf("\n--- Customer Menu ---\n");
+        printf("1. Browse Products\n");
+        printf("2. Search for a Product\n");
+        printf("3. Add to Cart\n");
+        printf("4. View Cart\n");
+        printf("5. Checkout\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        switch (choice) {
+            case 1:
+                browseProducts();
+                break;
+            case 2:
+                searchProduct();
+                break;
+            case 3:
+                addToCart();
+                break;
+            case 4:
+                viewCart();
+                break;
+            case 5:
+                applyCouponAtCheckout();
+                checkoutCart();
+                updateInventoryAfterPurchase();
+                printf("Thank you for your purchase!\n");
+                continueShopping = 0; // End the loop after checkout
+                break;
+            case 6:
+                printf("Exiting... Thank you for visiting!\n");
+                continueShopping = 0; // Exit the loop
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
 }

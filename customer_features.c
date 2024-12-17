@@ -49,7 +49,7 @@ struct products
 }product [1000];
 
 //test
-int main(){
+/*int main(){
 
     productInformation();
 
@@ -68,7 +68,7 @@ int main(){
     checkoutCart();
 
     //printf("\n%d",itemsInCart);
-}
+}*/
 
 
 //Reads product file and adds product information to struct, should be done at start of program
@@ -815,7 +815,7 @@ void updateInventoryAfterPurchase(){
 
 
     //update the products file
-    FILE *file = fopen("products3.csv","w");
+    FILE *file = fopen("products.csv","w");
 
         //check if file exists
     if (file == NULL){
