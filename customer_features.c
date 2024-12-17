@@ -17,6 +17,8 @@ void applyCouponAtCheckout();
 
 //For initializing product database
 void productInformation();
+//For initializing coupon database
+void couponInformation();
 
 //Information of items in cart
 struct cart
@@ -26,14 +28,10 @@ struct cart
     char category[50];
     char CodeUsed[20];
     float price;
+    float Alltotal;
     int amount;
     int stock;
 }InCart [1000];
-
-//Will be used to keeptrack of items in cart, at the start of the program it will be 0
-int itemsInCart=0;
-//Will be used to keep track of total amount of products for loops, start at 0
-int itemsInProductsList=0;
 
 //Information of products
 struct products
@@ -50,17 +48,36 @@ struct products
     char lastUpdated[20];
 }product [1000];
 
+//Coupon Information
+struct coupon
+{
+    char code[20];
+    char description[100];
+    char discountType[20];
+    float discount;
+    float MinTotal;
+    char expiryDate[11]; // Format: YYYY-MM-DD
+} myCoupon [100];
+
+//Will be used to keeptrack of items in cart, at the start of the program it will be 0
+int itemsInCart=0;
+//Will be used to keep track of total amount of products for loops, start at 0
+int itemsInProductsList=0;
+//Will be used to keep track of total amount of coupons for loops, start at 0
+int TotalCoupons=0;
+
 //test
 int main(){
 
     productInformation();
+    couponInformation();
 
     //browseProducts();
     //searchProduct();
     //searchProduct();
     //searchProduct();
     addToCart();
-    addToCart();
+    //addToCart();
     //addToCart();
 
     //viewCart();
@@ -69,7 +86,6 @@ int main(){
 
     checkoutCart();
 
-    //printf("\n%d",itemsInCart);
 }
 
 
@@ -157,6 +173,79 @@ void productInformation(){
 
 }
 
+//Reads coupon file and adds coupon information to struct, should be done at start of program
+void couponInformation(){
+
+
+    //opens file
+    FILE *file = fopen("coupons2.csv","r");
+
+    //check if file exists
+    if (file == NULL){
+        printf("Error: Unable to open coupon file.\n");
+        return;
+    }
+
+    //variables
+    char line[1000];
+    int i=0, isFirstLine=1;
+
+     while (fgets(line, sizeof(line), file))
+    {
+        //skip the header
+        if (isFirstLine) {
+            isFirstLine = 0;
+            continue;
+        }
+
+        sscanf(line, "%[^,],%.2f,%[^,],%[^,],%[^,],%.2f",
+               myCoupon[i].code, &myCoupon[i].discount,
+               myCoupon[i].discountType, myCoupon[i].expiryDate,
+               myCoupon[i].description, myCoupon[i].MinTotal);
+        TotalCoupons++;
+        i++;
+    }
+
+
+    //close the file
+    fclose(file);
+
+}
+
+// Made this helper function to figure out if a coupon is expired or not
+int isCouponExpired(const char *expiryDate)
+{
+    // This struct will hold the expiry date of a coupon.
+    struct tm expiry = {0};
+
+    // A variable called now with a type time_t
+    time_t now;
+
+    // A pointer called current, points to a structure that represents the current date and time.
+    struct tm *current;
+
+    // Reads the expiry date from a string called expiryDate in the format "YYYY-MM-DD" and stores the year, month, and day into the respective fields of the expiry structure.
+    sscanf(expiryDate, "%d-%d-%d", &expiry.tm_year, &expiry.tm_mon, &expiry.tm_mday);
+
+    // Adjusts the year field in the expiry structure. The tm_year field expects the number of years since 1900, so this line converts the full year (e.g., 2024) to the expected format by subtracting 1900.
+    expiry.tm_year -= 1900; // Adjust year
+
+    // Adjusts the month field in the expiry structure. The tm_mon field expects months in the range 0-11 (where 0 is January), so this line converts the month from the usual 1-12 range to 0-11 by subtracting 1.
+    expiry.tm_mon -= 1;     // Adjust month
+
+    // This function call gets the current time and stores it in the now variable.
+    time(&now);
+
+    // Converts the time stored in "now" to local time and stores the result in the current pointer. This pointer now points to a struct "tm" that represents the current date and time.
+    current = localtime(&now);
+
+    // Compares the expiry date with the current date. mktime converts the struct tm to time_t for comparison. difftime calculates the difference in seconds between the expiry date and the current date. If the result is less than 0, it means the expiry date is in the past.
+    if (difftime(mktime(&expiry), mktime(current)) < 0)
+    {
+        return 1; // Expired
+    }
+    return 0; // Not expired
+}
 
 // Function that searches for a product | Change return type to appropriate type
 void searchProduct(){
@@ -756,6 +845,8 @@ void checkoutCart(){
     {
     case 1:
         
+        InCart[1].Alltotal=total;
+
         applyCouponAtCheckout();
 
         break;
@@ -918,6 +1009,42 @@ void updateInventoryAfterPurchase(){
 
 // Function that applies coupon | Change return type to appropriate type
 void applyCouponAtCheckout(){
-    // Code here
+    
+    char enteredCode[20],discountType[10];
+    int i=0, done=0;
+
+    //print out list header
+    printf("\n_______________________________________________________________________________________________\n");
+    printf("\nCoupon Code |                  Description                  |  Expiration Date (Year-Month-Day)\n");
+    printf("________________________________________________________________________________________________\n");
+    //loop to print out all products
+    while(i<TotalCoupons){
+
+        printf(" %-9s | %-45s | %-10s\n", myCoupon[i].code, myCoupon[i].expiryDate);
+
+        i++;
+    }
+
+    printf("\n________________________________________________________________________________________________\n");
+
+    printf("\n<-----Select your coupon----->\n");
+        
+    while(done==0){
+        printf("\n  > Enter coupon code: ");
+        scanf("%s",enteredCode);
+
+        for(i=0;i<TotalCoupons;i++){
+
+            if(strcmp(enteredCode, myCoupon[i].code)==0){
+
+                done=1;
+
+                strcpy(discountType, myCoupon[i].)
+
+            }
+
+        }
+
+    }
 }
 
