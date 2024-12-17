@@ -51,9 +51,9 @@ int main(){
 
     productInformation();
 
-    browseProducts();
-    //searchProduct();
-    //searchProduct();
+    //browseProducts();
+    searchProduct();
+    searchProduct();
     //searchProduct();
     //addToCart();
     //addToCart();
@@ -160,16 +160,20 @@ void searchProduct(){
 
     //variables
     char productName[50], category[50];
-    float price;
+    float uppper_price,lower_price;
     int choice, i=0, j=0, done=0, match=0;
 
     //user interface to select search criteria
-    printf("\nSearch by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n");
-    
+    printf("\n _______________________________");
+    printf("\n|          Search Menu          |\n");
+    printf("|_______________________________|");
+    printf("\n| -Search by name     : Enter 1 |\n|                               |\n| -Search by category : Enter 2 |\n|                               |\n| -Search by price    : Enter 3 |\n");
+    printf("|_______________________________|\n");
+
     //receive right input
     while(done==0){
 
-        printf("\nYour selection: ");
+        printf("\n  > Enter your selection: ");
         scanf("%d",&choice);
         getchar();
     
@@ -179,7 +183,7 @@ void searchProduct(){
 
         }else{
 
-            printf("\nPlease enter valid option\n"); 
+            printf("\n<<---------Please enter a valid option!--------->>\n"); 
 
         }
 
@@ -191,10 +195,15 @@ void searchProduct(){
     case 1:
         done=1;
         //Enter product name
-        printf("\nEnter product name: ");
+        printf("\n<------Search by name selected------>\n");
+        printf("\n  > Enter product name: ");
         scanf("%[^\n]s",productName);
         getchar();
 
+        printf("\n______________________________________________________________________________________________________________________________________________________________\n");
+        printf("\n                                                                     Search results for %s\n", productName);
+        printf("______________________________________________________________________________________________________________________________________________________________");
+        printf("\n\n");                                                                     
         //loop through the names
         i = 0;
         while(i<=30){
@@ -251,10 +260,15 @@ void searchProduct(){
     case 2:
         
         //Enter product category
-        printf("\nEnter product category: ");
+        printf("\n<------Search by category selected------>\n");        
+        printf("\n  > Enter product category: ");
         scanf("%[^\n]s",category);
         getchar();
 
+        printf("\n______________________________________________________________________________________________________________________________________________________________\n");
+        printf("\n                                                                    Search results for %s\n", category);
+        printf("______________________________________________________________________________________________________________________________________________________________");                                                                 
+        printf("\n\n");
         //loop through product list
         i = 0;
         while(i<=30){
@@ -316,16 +330,25 @@ void searchProduct(){
     case 3:
            
         //Enter product price
-        printf("\nEnter product price: ");
-        scanf("%f",&price);
+        printf("\n<------Search by price selected------>\n");
+        printf("\n  > Enter upper price range: ");
+        scanf("%f",&uppper_price);
         getchar();
+        printf("  > Enter lower price range: ");
+        scanf("%f",&lower_price);
+        getchar();        
+
+        printf("\n______________________________________________________________________________________________________________________________________________________________\n");
+        printf("\n                                                            Search results for prices from %.2f to %.2f\n", lower_price, uppper_price);
+        printf("______________________________________________________________________________________________________________________________________________________________");                                                                 
+        printf("\n\n");
 
         //loop through the product list
         i = 0;
         while(i<=30){
 
-            //check if prices are the same
-            if(price==product[i].price){
+            //check if prices are in range
+            if(product[i].price<=uppper_price && product[i].price>=lower_price){
 
                 //print out product info
                 match++;
@@ -349,9 +372,11 @@ void searchProduct(){
 
     if(match==0){
 
-        printf("\nNo items found...\n");
+        printf("   -No items found...\n");
 
     }
+
+    printf("______________________________________________________________________________________________________________________________________________________________\n");
 
 }
 
@@ -383,7 +408,7 @@ void addToCart(){
     int choice, i=0, j=0, k=0, quantity, match=0, AlreadyInCart=0, done=0;
 
     //Enter item of purchase
-    printf("\nWhat would you like to purchase?\n");
+    printf("\nWhat would you like to add to cart?\n");
     printf("\nPlease enter product name or ID: ");
 
     scanf("%[^\n]s",productNameOrID);
