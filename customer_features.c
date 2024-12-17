@@ -37,6 +37,7 @@ struct products
     char productID[10];
     char productname[50];
     char description[100];
+    char actualDescription[100];
     char category[50];
     float price;
     int stockquantity;
@@ -49,15 +50,17 @@ struct products
 int main(){
 
     productInformation();
-    //addToCart();
-    //addToCart();
+
+    browseProducts();
     addToCart();
+    //addToCart();
+    //addToCart();
 
     viewCart();
 
     checkoutCart();
 
-    printf("\n%d",itemsInCart);
+    //printf("\n%d",itemsInCart);
 }
 
 
@@ -65,7 +68,7 @@ int main(){
 void productInformation(){
 
     //opens file
-    FILE *file = fopen("products2.csv","r");
+    FILE *file = fopen("products.csv","r");
 
     //check if file exists
     if (file == NULL){
@@ -95,10 +98,13 @@ void productInformation(){
         if (token[0] == '"'){
             // Handle quoted description
             strcpy(product[i].description, token + 1); // Skip the opening quote
-            
+            strcpy(product[i].actualDescription, token); //For rewriting file
+
             token = strtok(NULL, ",");
             strcat(product[i].description, ",");
+            strcat(product[i].actualDescription, ",");//for rewriting file
             strcat(product[i].description, token);
+            strcat(product[i].actualDescription, token); //for rewriting file
 
             product[i].description[strlen(product[i].description) - 1] = '\0'; // Remove the closing quote
 
@@ -111,6 +117,7 @@ void productInformation(){
             }
         }else{
             strcpy(product[i].description, token);
+            strcpy(product[i].actualDescription, token);//for file rewrite
         } 
 
         token = strtok(NULL, ",");
@@ -622,7 +629,7 @@ void checkoutCart(){
                 time_t t = time(NULL);
                 struct tm tm = *localtime(&t);
                 char lastUpdated[20];
-                sprintf(lastUpdated, "%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+                sprintf(lastUpdated, "%02d/%02d/%d\n", tm.tm_mday,  tm.tm_mon + 1, tm.tm_year + 1900); // i changed this, hope it works tomorrow
 
                 i=0;
                 while(i<itemsInCart){
@@ -672,7 +679,7 @@ void updateInventoryAfterPurchase(){
 
 
     //update the products file
-    FILE *file = fopen("products2.csv","w");
+    FILE *file = fopen("products3.csv","w");
 
         //check if file exists
     if (file == NULL){
@@ -681,11 +688,11 @@ void updateInventoryAfterPurchase(){
     }
 
 
-    fprintf(file, "ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated\n");
-    for (int j = 0; j < 1000; j++){
-        fprintf(file, "%s,%s,%s,%s,%.2f,%d,%d,%d,%s\n",
+    fprintf(file,"ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated\n");
+    for (int j = 0; j < 30; j++){
+        fprintf(file,"%s,%s,%s,%s,%.2f,%d,%d,%d,%s",
                 product[j].productID, product[j].productname,
-                product[j].description, product[j].category,
+                product[j].actualDescription, product[j].category,
                 product[j].price, product[j].stockquantity,
                 product[j].minimumThreshold, product[j].restockAmount,
                 product[j].lastUpdated);
