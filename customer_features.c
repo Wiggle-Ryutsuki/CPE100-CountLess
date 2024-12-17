@@ -6,7 +6,6 @@
 #include <time.h>
 // include other necessary libraries including from other scripts
 
-
 void searchProduct();
 void browseProducts();
 void addToCart();
@@ -835,7 +834,6 @@ void updateInventoryAfterPurchase(){
     }
 
     fclose(file);
-
 
     //Closing message
     printf("\n\n__________________________________");
