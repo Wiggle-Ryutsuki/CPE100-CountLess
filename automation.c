@@ -19,17 +19,21 @@ typedef struct {
     char lastUpdated[15];
 } Product;
 
+// Global variables
 Product products[MAX_PRODUCTS];
 int productCount = 0;
+int restockDay = 0; // Variable to store the user-selected restock day (0 = no schedule)
 
-// Function Declarations
+// Function declarations
 void loadProducts();
 void saveProducts();
+void executeRestockScript();
 void autoRestock();
-void autoPurchase(char *productID, int quantity);
 void schedulePurchase();
+void checkScheduledRestock();
+void autoPurchase(char *productID, int quantity);
 
-// Load product data from CSV file
+// Function that loads product data from the CSV file
 void loadProducts() {
     FILE *file = fopen("product.csv", "r");
     if (!file) {
@@ -38,7 +42,7 @@ void loadProducts() {
     }
 
     char line[MAX_LINE_LENGTH];
-    fgets(line, MAX_LINE_LENGTH, file); // Skip header
+    fgets(line, MAX_LINE_LENGTH, file); // Skip header line
 
     while (fgets(line, MAX_LINE_LENGTH, file)) {
         Product p;
@@ -51,7 +55,7 @@ void loadProducts() {
     fclose(file);
 }
 
-// Save product data back to CSV file
+// Function that saves product data to the CSV file
 void saveProducts() {
     FILE *file = fopen("product.csv", "w");
     if (!file) {
@@ -69,54 +73,79 @@ void saveProducts() {
     fclose(file);
 }
 
-// Automatically restock products below the minimum threshold
+// Function that performs auto-restock
 void autoRestock() {
+    printf("Starting auto-restock\n");
     for (int i = 0; i < productCount; i++) {
         if (products[i].stockQuantity < products[i].minimumThreshold) {
+            printf("Restocking %s. Current stock: %d, Threshold: %d\n",
+                   products[i].productName, products[i].stockQuantity, products[i].minimumThreshold);
             products[i].stockQuantity += products[i].restockAmount;
 
+            // Update last updated date
             time_t now = time(NULL);
             struct tm *t = localtime(&now);
             strftime(products[i].lastUpdated, sizeof(products[i].lastUpdated), "%Y-%m-%d", t);
         }
     }
     saveProducts();
+    printf("Auto-restock completed.\n");
 }
 
-// Purchase a product by ID and quantity
+// Function to schedule a restock day
+void schedulePurchase() {
+    printf("Select the day of the week to auto-restock (1=Monday, 7=Sunday, 0=Disable): ");
+    scanf("%d", &restockDay);
+
+    if (restockDay < 0 || restockDay > 7) {
+        printf("Invalid day. Schedule reset.\n");
+        restockDay = 0;
+    } else if (restockDay == 0) {
+        printf("Auto-restock scheduling disabled.\n");
+    } else {
+        printf("Auto-restock scheduled for day %d of the week.\n", restockDay);
+    }
+}
+
+// Function to check if auto-restock is scheduled for the current day
+void checkScheduledRestock() {
+    if (restockDay == 0) return; // No schedule set
+
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    int currentDay = t->tm_wday == 0 ? 7 : t->tm_wday; // Adjust Sunday as 7
+
+    if (currentDay == restockDay) {
+        printf("\nScheduled auto-restock triggered for today.\n");
+        loadProducts();
+        autoRestock();
+    } else {
+        printf("\nNo scheduled restock for today. Scheduled for day %d.\n", restockDay);
+    }
+}
+
+// Function to process a purchase
 void autoPurchase(char *productID, int quantity) {
     for (int i = 0; i < productCount; i++) {
         if (strcmp(products[i].productID, productID) == 0) {
             if (products[i].stockQuantity >= quantity) {
                 products[i].stockQuantity -= quantity;
+                printf("Purchased %d of %s. Remaining stock: %d\n",
+                       quantity, products[i].productName, products[i].stockQuantity);
 
+                // Update last updated date
                 time_t now = time(NULL);
                 struct tm *t = localtime(&now);
                 strftime(products[i].lastUpdated, sizeof(products[i].lastUpdated), "%Y-%m-%d", t);
 
                 saveProducts();
-                printf("Purchase successful: %d of %s remaining %d.\n",
-                       quantity, products[i].productName, products[i].stockQuantity);
                 return;
             } else {
-                printf("Insufficient stock for %s. Available: %d\n", products[i].productName, products[i].stockQuantity);
+                printf("Insufficient stock for %s. Available: %d\n",
+                       products[i].productName, products[i].stockQuantity);
                 return;
             }
         }
     }
     printf("Product ID %s not found.\n", productID);
-}
-
-// Schedule Purchase: Allow users to set restock day
-void schedulePurchase() {
-    int day;
-    printf("Enter the day of the week for restocking (1 = Monday, 7 = Sunday): ");
-    scanf("%d", &day);
-
-    if (day < 1 || day > 7) {
-        printf("Invalid day. Please enter a number between 1 and 7.\n");
-        return;
-    }
-
-    printf("Restock scheduled on day %d. The program will check and restock products automatically.\n", day);
 }
