@@ -216,6 +216,7 @@ void couponInformation(){
             continue;
         }
 
+        //this is not working
         sscanf(line, "%[^,],%f,%[^,],%[^,],%[^,],%f",
                Coupon[i].code, &Coupon[i].discount,
                Coupon[i].discountType, Coupon[i].expiryDate,
