@@ -1,7 +1,6 @@
 #include "database.h"
-#include <string.h>
-#include <stdlib.h>
 
+// Load products from a CSV file
 int loadDatabase(const char *filename, Product products[], int *productCount) {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -17,7 +16,7 @@ int loadDatabase(const char *filename, Product products[], int *productCount) {
             break;
         }
         Product *p = &products[*productCount];
-        sscanf(buffer, "%9s,%49[^,],%99[^,],%49[^,],%f,%d,%d,%d,%19[^\n]",
+        sscanf(buffer, "%9[^,],%49[^,],%99[^,],%49[^,],%lf,%d,%d,%d,%19[^\n]",
                p->product_id, p->name, p->description, p->category,
                &p->price, &p->stock_quantity, &p->minimum_threshold,
                &p->restock_amount, p->last_updated);
@@ -28,6 +27,7 @@ int loadDatabase(const char *filename, Product products[], int *productCount) {
     return 0;
 }
 
+// Save products to a CSV file
 int saveDatabase(const char *filename, Product products[], int productCount) {
     FILE *file = fopen(filename, "w");
     if (!file) {
@@ -37,7 +37,7 @@ int saveDatabase(const char *filename, Product products[], int productCount) {
 
     for (int i = 0; i < productCount; i++) {
         Product *p = &products[i];
-        fprintf(file, "%s,%s,%s,%s,%.2f,%d,%d,%d,%s\n",
+        fprintf(file, "%s,%s,%s,%s,%.2lf,%d,%d,%d,%s\n",
                 p->product_id, p->name, p->description, p->category,
                 p->price, p->stock_quantity, p->minimum_threshold,
                 p->restock_amount, p->last_updated);
@@ -47,18 +47,26 @@ int saveDatabase(const char *filename, Product products[], int productCount) {
     return 0;
 }
 
-int addProduct(Product products[], int *productCount, Product newProduct) {
-    if (*productCount >= MAX_PRODUCTS) return -1;
-    products[(*productCount)++] = newProduct;
-    return 0;
+// Add a transaction
+void addTransaction(Transaction transactions[], int *transactionCount, Transaction newTransaction) {
+    if (*transactionCount >= MAX_TRANSACTIONS) {
+        fprintf(stderr, "Transaction list is full.\n");
+        return;
+    }
+    transactions[(*transactionCount)++] = newTransaction;
 }
 
-int updateProduct(Product products[], int productCount, const char *productId, Product updatedProduct) {
-    for (int i = 0; i < productCount; i++) {
-        if (strcmp(products[i].product_id, productId) == 0) {
-            products[i] = updatedProduct;
-            return 0;
-        }
+// Display transactions
+void displayTransactions(const Transaction transactions[], int transactionCount) {
+    printf("\n%-20s %-20s %-10s %-20s %-15s %-15s %-10s %-10s %-10s\n",
+           "Timestamp", "ActionType", "User", "ProductName", "Category",
+           "DiscountCode", "Price", "Quantity", "Total");
+    printf("--------------------------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < transactionCount; i++) {
+        const Transaction *t = &transactions[i];
+        printf("%-20s %-20s %-10s %-20s %-15s %-15s %-10.2lf %-10d %-10.2lf\n",
+               t->timestamp, t->action_type, t->user, t->product_name,
+               t->category, t->discount_code, t->price, t->quantity, t->total);
     }
-    return -1;
 }
