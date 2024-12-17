@@ -86,7 +86,7 @@ int main(){
     //searchProduct();
     //searchProduct();
     //searchProduct();
-    //addToCart();
+    addToCart();
     //addToCart();
     //addToCart();
 
@@ -94,15 +94,15 @@ int main(){
     //browseProducts();
     //searchProduct();
 
-    //checkoutCart();
+    checkoutCart();
 
-    for(int i =0; i<TotalCoupons; i++){
+    //for(int i =0; i<TotalCoupons; i++){
 
-        printf(" %s %.2f %s %S %s %s %.2f\n", Coupon[i].code, Coupon[i].discount,
-               Coupon[i].discountType, Coupon[i].expiryDate,
-               Coupon[i].description, Coupon[i].MinTotal );
+        //printf(" %s %.2f %s %s %.2f\n", Coupon[i].code, Coupon[i].discount,
+              // Coupon[i].discountType,
+              // Coupon[i].description, Coupon[i].MinTotal );
 
-    }
+    //}
 
 }
 
@@ -216,7 +216,7 @@ void couponInformation(){
             continue;
         }
 
-        //this is not working
+        //this is not workingg
         sscanf(line, "%[^,],%f,%[^,],%[^,],%[^,],%f",
                Coupon[i].code, &Coupon[i].discount,
                Coupon[i].discountType, Coupon[i].expiryDate,
@@ -798,7 +798,7 @@ void checkoutCart(){
     
     //variables
     float total=0, productTotal;
-    int choice, confirm, i=0, j=0, valid=0;
+    int choice, confirm, i=0, j=0, valid=0, loop=0;
 
     //Exit if no items in cart
     if(itemsInCart==0){
@@ -848,7 +848,14 @@ void checkoutCart(){
         printf("\n  > Use coupon?: ");
         scanf("%d",&choice);
 
-        if(choice==1 || choice){
+        if(loop>10){
+            
+            printf("<<---------Error--------->>");
+            return;
+
+        }
+
+        if(choice==1 || choice == 2){
 
             valid = 1;
 
@@ -857,6 +864,8 @@ void checkoutCart(){
             printf("\n<<---------Please enter valid input!--------->>\n");
 
         }
+        
+        loop++;
 
     }
 
@@ -1037,18 +1046,18 @@ void applyCouponAtCheckout(){
     float total, saved=0; 
 
     //print out list header
-    printf("\n_______________________________________________________________________________________________\n");
-    printf("\nCoupon Code |                  Description                  |  Expiration Date (Year-Month-Day)\n");
-    printf("________________________________________________________________________________________________\n");
+    printf("\n_____________________________________________________________________________________________________\n");
+    printf("\nCoupon Code |                  Description                       |  Expiration Date (Year-Month-Day)\n");
+    printf("______________________________________________________________________________________________________\n");
     //loop to print out all products
     while(i<TotalCoupons){
 
-        printf(" %-9s | %-45s | %-10s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
+        printf(" %-10s | %-50s | %10s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
 
         i++;
     }
 
-    printf("\n________________________________________________________________________________________________\n");
+    printf("\n______________________________________________________________________________________________________\n");
 
     printf("\n<-----Select your coupon----->\n");
         
@@ -1087,19 +1096,15 @@ void applyCouponAtCheckout(){
 
     if (isCouponExpired(MyCoupon[1].expiryDate))
     {
-        printf("\n<--------The coupon is expired.-------->\n");
+        printf("\n\n<--------The coupon is expired.-------->\n");
         printf("<--------Discount unapplicable--------->\n");
 
         return;
     }
-    else
-    {
-        printf("\n > The coupon is valid. <\n");
-    }
 
     if(InCart[1].Alltotal < MyCoupon[1].MinTotal){
 
-        printf("\n<-------Minimum total not reached-------->\n");
+        printf("\n\n<-------Minimum total not reached-------->\n");
         printf("<---------Discount unapplicable---------->\n");
 
         return;        
@@ -1107,6 +1112,8 @@ void applyCouponAtCheckout(){
     }
 
     if(strcmp(MyCoupon[1].discountType, "Percentage")==0){
+
+        printf("\n  > The coupon is valid. <\n");
 
         total=InCart[1].Alltotal;
         total=((total*MyCoupon[1].discount)/100);
@@ -1119,6 +1126,8 @@ void applyCouponAtCheckout(){
         return;
 
     }else{
+
+        printf("\n  > The coupon is valid. <\n");
 
         total=InCart[1].Alltotal;
         total=total-MyCoupon[1].discount;
