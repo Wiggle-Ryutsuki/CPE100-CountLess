@@ -31,7 +31,6 @@ void executeRestockScript();
 void autoRestock();
 void schedulePurchase();
 void checkScheduledRestock();
-void autoPurchase(char *productID, int quantity);
 
 // Function that loads product data from the CSV file
 void loadProducts() {
@@ -124,28 +123,3 @@ void checkScheduledRestock() {
     }
 }
 
-// Function to process a purchase
-void autoPurchase(char *productID, int quantity) {
-    for (int i = 0; i < productCount; i++) {
-        if (strcmp(products[i].productID, productID) == 0) {
-            if (products[i].stockQuantity >= quantity) {
-                products[i].stockQuantity -= quantity;
-                printf("Purchased %d of %s. Remaining stock: %d\n",
-                       quantity, products[i].productName, products[i].stockQuantity);
-
-                // Update last updated date
-                time_t now = time(NULL);
-                struct tm *t = localtime(&now);
-                strftime(products[i].lastUpdated, sizeof(products[i].lastUpdated), "%Y-%m-%d", t);
-
-                saveProducts();
-                return;
-            } else {
-                printf("Insufficient stock for %s. Available: %d\n",
-                       products[i].productName, products[i].stockQuantity);
-                return;
-            }
-        }
-    }
-    printf("Product ID %s not found\n", productID);
-}
