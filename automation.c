@@ -89,7 +89,7 @@ void autoRestock() {
         }
     }
     saveProducts();
-    printf("Auto-restock completed.\n");
+    printf("Auto-restock completed\n");
 }
 
 // Function to schedule a restock day
@@ -98,12 +98,12 @@ void schedulePurchase() {
     scanf("%d", &restockDay);
 
     if (restockDay < 0 || restockDay > 7) {
-        printf("Invalid day. Schedule reset.\n");
+        printf("Invalid day. Schedule reset\n");
         restockDay = 0;
     } else if (restockDay == 0) {
-        printf("Auto-restock scheduling disabled.\n");
+        printf("Auto-restock scheduling disabled\n");
     } else {
-        printf("Auto-restock scheduled for day %d of the week.\n", restockDay);
+        printf("Auto-restock scheduled for day %d of the week\n", restockDay);
     }
 }
 
@@ -116,11 +116,11 @@ void checkScheduledRestock() {
     int currentDay = t->tm_wday == 0 ? 7 : t->tm_wday; // Adjust Sunday as 7
 
     if (currentDay == restockDay) {
-        printf("\nScheduled auto-restock triggered for today.\n");
+        printf("\nScheduled auto-restock triggered for today\n");
         loadProducts();
         autoRestock();
     } else {
-        printf("\nNo scheduled restock for today. Scheduled for day %d.\n", restockDay);
+        printf("\nNo scheduled restock for today. Scheduled for day %d\n", restockDay);
     }
 }
 
@@ -147,5 +147,5 @@ void autoPurchase(char *productID, int quantity) {
             }
         }
     }
-    printf("Product ID %s not found.\n", productID);
+    printf("Product ID %s not found\n", productID);
 }
