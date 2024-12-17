@@ -1,11 +1,16 @@
-Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description
-SUMMER10,10,Percentage,2024-08-31,Get 10% off your summer purchases.
-FLAT50,50,Flat Value,2024-09-30,Flat ฿50 discount on orders above ฿200.
-WELCOME15,15,Percentage,2024-12-31,New user welcome offer with 15% off.
-SAVE20,20,Flat Value,2024-10-15,Save ฿20 on all orders over ฿100.
-HOLIDAY5,5,Percentage,2024-12-01,5% discount for holiday season shopping.
-SPRING25,25,Percentage,2024-09-10,Enjoy 25% off spring collections.
-FLASH75,75,Flat Value,2024-08-15,Flat ฿75 off during the flash sale event.
-WEEKEND30,30,Percentage,2024-07-20,30% discount for weekend shopping.
-MONSOON20,20,Percentage,2024-08-01,Monsoon offer: 20% off on rainwear.
-DEAL40,40,Flat Value,2024-09-05,Grab ฿40 off on your next big purchase.
+Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description,Min Total (Baht)
+SUMMER10,10,Percentage,2024-08-31,Get 10% off your summer purchases.,100
+FLAT50,50,Flat Value,2024-09-30,Flat 50 baht discount on orders above 200 baht.,200
+WELCOME15,15,Percentage,2024-12-31,New user welcome offer with 15% off.,150
+SAVE20,20,Flat Value,2024-10-15,Save 20 baht on all orders over 100 baht.,100
+HOLIDAY5,5,Percentage,2024-12-01,5% discount for holiday season shopping.,50
+SPRING25,25,Percentage,2024-09-10,Enjoy 25% off spring collections.,120
+FLASH75,75,Flat Value,2024-08-15,Flat 75 baht off during the flash sale event.,300
+WEEKEND30,30,Percentage,2024-07-20,30% discount for weekend shopping.,100
+MONSOON20,20,Percentage,2024-08-01,Monsoon offer: 20% off on rainwear.,150
+DEAL40,40,Flat Value,2024-09-05,Grab 40 baht off on your next big purchase.,200
+SIGMA10,50,Percentage,2024-12-30,,40
+SIGMA30,30,Percentage,2023-12-31,,200
+SALE40,40,Flat Value,2024-12-30,,200
+SALE75,75,Percentage,2024-12-23,,200
+SALE90,90,Flat Value,2024-3-10,A discount of 90 Baht,50

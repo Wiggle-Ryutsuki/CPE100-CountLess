@@ -20,6 +20,8 @@ void applyCoupon();
 
 // Helper functions
 void getLastProductID();
+int isValidDate();
+int isLeapYear();
 
 // Function that creates new product | Change return type to appropriate type
 void addProduct()
@@ -666,8 +668,79 @@ void logAction(const char *actionType, const char *productName, const char *cate
 }
 
 // Function that creates coupon | Change return type to appropriate type
-void createCoupon(){
-    // Code here
+void createCoupon()
+{
+    // Open the file in append mode
+    FILE *file = fopen("coupons.csv", "a");
+
+    // Check if the file was opened successfully
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    // Variables to store coupon details
+    char couponName[20], discountType[20], expiryDate[11], description[100];
+    int amountOfDiscount, minTotal, discountChoice;
+
+    // Prompt the user for coupon details
+    printf("Enter Coupon Name: ");
+    fgets(couponName, sizeof(couponName), stdin);
+    couponName[strcspn(couponName, "\n")] = 0; // Remove newline character
+
+    printf("Enter Amount of Discount: ");
+    scanf("%d", &amountOfDiscount);
+    getchar(); // Consume newline character left by scanf
+
+    // Prompt the user to enter a choice for discount type
+    printf("Enter Discount Type (1 for Percentage, 2 for Flat Value): ");
+    scanf("%d", &discountChoice);
+    getchar(); // Consume newline character left by scanf
+
+    // Assign the discount type based on user choice
+    if (discountChoice == 1)
+    {
+        strcpy(discountType, "Percentage");
+    }
+    else if (discountChoice == 2)
+    {
+        strcpy(discountType, "Flat Value");
+    }
+    else
+    {
+        printf("Invalid choice! Defaulting to Percentage.\n");
+        strcpy(discountType, "Percentage");
+    }
+
+    // Prompt the user for a valid expiry date
+    do
+    {
+        printf("Enter Expiry Date (YYYY-MM-DD): ");
+        fgets(expiryDate, sizeof(expiryDate), stdin);
+        expiryDate[strcspn(expiryDate, "\n")] = 0; // Remove newline character
+
+        if (!isValidDate(expiryDate))
+        {
+            printf("Invalid date format! Please enter a valid date.\n");
+        }
+    } while (!isValidDate(expiryDate));
+
+    printf("Enter Description: ");
+    fgets(description, sizeof(description), stdin);
+    description[strcspn(description, "\n")] = 0; // Remove newline character
+
+    printf("Enter Minimum Total (Baht): ");
+    scanf("%d", &minTotal);
+    getchar(); // Consume newline character left by scanf
+
+    // Write the new coupon details to the file
+    fprintf(file, "%s,%d,%s,%s,%s,%d\n", couponName, amountOfDiscount, discountType, expiryDate, description, minTotal);
+
+    // Close the file
+    fclose(file);
+
+    printf("Coupon added successfully.\n");
 }
 
 // Function that validates coupon when customer uses a coupon | Change return type to appropriate type
@@ -710,8 +783,47 @@ void getLastProductID(char *lastID)
     fclose(file);
 }
 
+// Function to check if a date is valid
+// Function to check if a date is valid
+int isValidDate(const char *date)
+{
+    int year, month, day;
+    if (sscanf(date, "%d-%d-%d", &year, &month, &day) != 3)
+    {
+        return 0; // Invalid format
+    }
+    // Basic validation of date components
+    if (year < 1900 || month < 1 || month > 12 || day < 1)
+    {
+        return 0; // Invalid date
+    }
+
+    // Array with the number of days in each month
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Adjust for leap year
+    if (month == 2 && isLeapYear(year))
+    {
+        daysInMonth[1] = 29;
+    }
+
+    // Check if the day is within the valid range for the month
+    if (day > daysInMonth[month - 1])
+    {
+        return 0; // Invalid day for the month
+    }
+
+    return 1; // Valid date
+}
+
+// Function to check if a year is a leap year
+int isLeapYear(int year)
+{
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
 // Test
 int main(void)
 {
-    addProduct();
+    createCoupon();
 }
