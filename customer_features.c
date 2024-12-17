@@ -52,13 +52,20 @@ int main(){
     productInformation();
 
     browseProducts();
-    addToCart();
+    //searchProduct();
+    //searchProduct();
+    //searchProduct();
+    //addToCart();
     //addToCart();
     //addToCart();
 
-    viewCart();
+    //viewCart();
+    //browseProducts();
+    //searchProduct();
 
-    checkoutCart();
+    //checkoutCart();
+
+
 
     //printf("\n%d",itemsInCart);
 }
@@ -154,19 +161,39 @@ void searchProduct(){
     //variables
     char productName[50], category[50];
     float price;
-    int choice, i=0, j=0;
+    int choice, i=0, j=0, done=0, match=0;
 
     //user interface to select search criteria
-    printf("\nSearch by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n\nYour selection: ");
-    scanf("%d",&choice);
+    printf("\nSearch by name: Enter 1\nSearch by category: Enter 2\nSearch by price: Enter 3\n");
+    
+    //receive right input
+    while(done==0){
+
+        printf("\nYour selection: ");
+        scanf("%d",&choice);
+        getchar();
+    
+        if(choice==1 || choice==2 || choice==3){
+
+            done=1;
+
+        }else{
+
+            printf("\nPlease enter valid option\n"); 
+
+        }
+
+    }
     
     switch (choice)
     {
     //search product by name
     case 1:
+        done=1;
         //Enter product name
         printf("\nEnter product name: ");
-        scanf("\n%[^\n]s",productName);
+        scanf("%[^\n]s",productName);
+        getchar();
 
         //loop through the names
         i = 0;
@@ -208,27 +235,25 @@ void searchProduct(){
 
                 //product name comparisons, if it is the same, print out the information
                 if(strcmp(productName, compareName)==0){
+                    match++;
                     printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
                 }
 
-            }else{
-
-                //If string lentghs are not the same then skip this iteration
-                i++;
-                continue;
             }
 
             i++;
 
         }
-
+        
         break;
-    
+
     //search product by category
     case 2:
+        
         //Enter product category
         printf("\nEnter product category: ");
-        scanf("\n%[^\n]s",category);
+        scanf("%[^\n]s",category);
+        getchar();
 
         //loop through product list
         i = 0;
@@ -270,12 +295,13 @@ void searchProduct(){
 
                 //category comparisons, if it is the same, print out the information
                 if(strcmp(category, compareCategory)==0){
+                    match++;
                     printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
                 }
 
             }else{
 
-                //If string lentghs are not the same then skip this iteration
+            //If string lentghs are not the same then skip this iteration
                 i++;
                 continue;
             }
@@ -288,10 +314,11 @@ void searchProduct(){
 
     //search product by price
     case 3:
-
+           
         //Enter product price
         printf("\nEnter product price: ");
         scanf("%f",&price);
+        getchar();
 
         //loop through the product list
         i = 0;
@@ -301,6 +328,7 @@ void searchProduct(){
             if(price==product[i].price){
 
                 //print out product info
+                match++;
                 printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
 
             }
@@ -316,6 +344,13 @@ void searchProduct(){
         printf("\nPlease enter valid option\n");
 
         break;
+      
+    }    
+
+    if(match==0){
+
+        printf("\nNo items found...\n");
+
     }
 
 }
@@ -341,7 +376,7 @@ void addToCart(){
 
     //variables
     char productNameOrID[50];
-    int choice, i=0, j=0, k=0, quantity, match=0, AlreadyInCart=0;
+    int choice, i=0, j=0, k=0, quantity, match=0, AlreadyInCart=0, done=0;
 
     //Enter item of purchase
     printf("\nWhat would you like to purchase?\n");
@@ -350,10 +385,24 @@ void addToCart(){
     scanf("%[^\n]s",productNameOrID);
     getchar();
 
-    printf("Please enter quantity of purchase: ");
+    while(done==0){
 
-    scanf("%d",&quantity);
-    getchar();
+        printf("\nPlease enter quantity of purchase: ");
+
+        scanf("%d",&quantity);
+        getchar();
+
+        if(quantity<=0){
+
+            printf("\nPlease enter valid amount\n");
+
+        }else{
+
+            done=1;
+
+        }
+
+    }
 
     //loop through product list
     i = 0;
@@ -700,7 +749,7 @@ void updateInventoryAfterPurchase(){
 
     fclose(file);
 
-    printf("\nFile successfully updated\n");
+    printf("\nPurchase successful\n");
 
 }
 
