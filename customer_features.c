@@ -23,6 +23,8 @@ struct cart
 {
     char productID[10];
     char productname[50];
+    char category[50];
+    char CodeUsed[20];
     float price;
     int amount;
     int stock;
@@ -590,6 +592,7 @@ void addToCart(){
                     //if there are enough items, add item to cart
                     strcpy(InCart[itemsInCart].productID, product[i].productID);
                     strcpy(InCart[itemsInCart].productname, product[i].productname);
+                    strcpy(InCart[itemsInCart].category, product[i].category);
                     InCart[itemsInCart].price = product[i].price;
                     InCart[itemsInCart].amount = quantity;
                     InCart[itemsInCart].stock = product[i].stockquantity;                    
@@ -620,6 +623,7 @@ void addToCart(){
                 //if there are enough items, add item to cart                
                 strcpy(InCart[itemsInCart].productID, product[i].productID);
                 strcpy(InCart[itemsInCart].productname, product[i].productname);
+                strcpy(InCart[itemsInCart].category, product[i].category);                
                 InCart[itemsInCart].price = product[i].price;
                 InCart[itemsInCart].amount = quantity;
                 InCart[itemsInCart].stock = product[i].stockquantity;
@@ -737,67 +741,15 @@ void checkoutCart(){
     {
     case 1:
         
+        applyCouponAtCheckout();
+
         break;
     
     case 2:
 
         printf("\n  > No coupon selected <\n");
         
-        int done=0;
-            
-        while(done==0){
-
-            printf("\n<------Confirm purchase?------>\n");
-            printf("\n  - Confirm: Enter 1\n  - Cancel : Enter 2\n");
-
-            printf("\n  > Confirm?: ");
-            scanf("%d",&confirm);
-
-            if(confirm==1){
-
-                done=1;
-
-                // Get the current date and time
-                time_t t = time(NULL);
-                struct tm tm = *localtime(&t);
-                char lastUpdated[20];
-                sprintf(lastUpdated, "%02d/%02d/%d\n", tm.tm_mday,  tm.tm_mon + 1, tm.tm_year + 1900); // i changed this, hope it works tomorrow
-
-                i=0;
-                while(i<itemsInCart){
-
-                    while (j<itemsInProductsList){
-                        
-                        if(strcmp(InCart[i].productID, product[j].productID)==0){
-
-                            product[j].stockquantity-=InCart[i].amount;
-                            strcpy(product[j].lastUpdated, lastUpdated);
-
-                            break;
-
-                        }
-
-                        j++;
-                    }
-                    
-                    i++;
-                }
-
-                updateInventoryAfterPurchase();
-
-            }else if(confirm==2){
-
-                done=1;
-                printf("\n  > Order canceled <\n");
-                printf("_________________________________________________________________________________________________________________\n");
-
-            }else{
-
-                printf("\n<----------Please enter valid input!--------->\n");
-
-            }
-
-        }
+        strcpy(InCart[1].CodeUsed, "-");
 
         break;
 
@@ -806,6 +758,63 @@ void checkoutCart(){
         printf("\n<----------Please enter valid input!(Order Cancled)--------->\n");
 
         break;
+    }
+
+    int done=0;
+            
+    while(done==0){
+
+        printf("\n<------Confirm purchase?------>\n");
+        printf("\n  - Confirm: Enter 1\n  - Cancel : Enter 2\n");
+
+        printf("\n  > Confirm?: ");
+        scanf("%d",&confirm);
+
+        if(confirm==1){
+
+            done=1;
+
+            // Get the current date and time
+            time_t t = time(NULL);
+            struct tm tm = *localtime(&t);
+            char lastUpdated[20];
+            sprintf(lastUpdated, "%02d/%02d/%d\n", tm.tm_mday,  tm.tm_mon + 1, tm.tm_year + 1900); 
+
+            i=0;
+            while(i<itemsInCart){
+
+                while (j<itemsInProductsList){
+                        
+                    if(strcmp(InCart[i].productID, product[j].productID)==0){
+
+                        product[j].stockquantity-=InCart[i].amount;
+                        InCart[i].stock=product[j].stockquantity;
+                        strcpy(product[j].lastUpdated, lastUpdated);
+
+                        break;
+
+                    }
+
+                    j++;
+                }
+                    
+                i++;
+            }
+
+            updateInventoryAfterPurchase();
+
+        }else if(confirm==2){
+
+            done=1;
+            printf("\n  > Order canceled <\n");
+            printf("_________________________________________________________________________________________________________________\n");
+
+        }else{
+
+            printf("\n<----------Please enter valid input!--------->\n");
+
+        }
+
     }
 
 }
@@ -817,9 +826,9 @@ void updateInventoryAfterPurchase(){
     //update the products file
     FILE *file = fopen("products3.csv","w");
 
-        //check if file exists
+    //check if file exists
     if (file == NULL){
-        printf("Error: Unable to open the file.\n");
+        printf("Error: Unable to open product file.\n");
         return;
     }
 
@@ -836,6 +845,47 @@ void updateInventoryAfterPurchase(){
 
     fclose(file);
 
+    // Get the current date and time to the minute for logs and transactions
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char TimeStamp[20];
+    sprintf(TimeStamp, "%02d/%02d/%d %d:%d", tm.tm_mon + 1, tm.tm_mday, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
+
+    //update the Logs file
+    FILE *lPtr = fopen("logs2.csv","a");
+
+    //check if file exists
+    if (lPtr == NULL){
+        printf("Error: Unable to open logs file.\n");
+        return;
+    }
+
+    for (int j = 0; j < itemsInCart; j++){
+        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d\n",
+                TimeStamp, InCart[j].productname,
+                InCart[j].category, InCart[1].CodeUsed, InCart[j].price,
+                InCart[j].stock);
+    }    
+
+    fclose(lPtr);
+
+    //update the Logs file
+    FILE *tPtr = fopen("transactions2.csv","a");
+
+    //check if file exists
+    if (tPtr == NULL){
+        printf("Error: Unable to open transactions file.\n");
+        return;
+    }
+
+    for (int j = 0; j < itemsInCart; j++){
+        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f\n",
+                TimeStamp, InCart[j].productname,
+                InCart[j].category, InCart[1].CodeUsed, InCart[j].price,
+                InCart[j].amount, (InCart[j].price*InCart[j].amount));
+    }    
+
+    fclose(tPtr);
 
     //Closing message
     printf("\n\n__________________________________");
