@@ -26,7 +26,6 @@ struct cart
     char productID[10];
     char productname[50];
     char category[50];
-    char CodeUsed[20];
     float price;
     float Alltotal;
     int amount;
@@ -57,7 +56,18 @@ struct coupon
     float discount;
     float MinTotal;
     char expiryDate[11]; // Format: YYYY-MM-DD
-} myCoupon [100];
+} Coupon [100];
+
+//information on selected coupon
+struct MyCoupon
+{
+    char code[20];
+    char discountType[20];
+    float discount;
+    float MinTotal;
+    char expiryDate[11]; // Format: YYYY-MM-DD
+} MyCoupon[2];
+
 
 //Will be used to keeptrack of items in cart, at the start of the program it will be 0
 int itemsInCart=0;
@@ -76,7 +86,7 @@ int main(){
     //searchProduct();
     //searchProduct();
     //searchProduct();
-    addToCart();
+    //addToCart();
     //addToCart();
     //addToCart();
 
@@ -84,7 +94,15 @@ int main(){
     //browseProducts();
     //searchProduct();
 
-    checkoutCart();
+    //checkoutCart();
+
+    for(int i =0; i<TotalCoupons; i++){
+
+        printf(" %s %.2f %s %S %s %s %.2f\n", Coupon[i].code, Coupon[i].discount,
+               Coupon[i].discountType, Coupon[i].expiryDate,
+               Coupon[i].description, Coupon[i].MinTotal );
+
+    }
 
 }
 
@@ -198,10 +216,11 @@ void couponInformation(){
             continue;
         }
 
-        sscanf(line, "%[^,],%.2f,%[^,],%[^,],%[^,],%.2f",
-               myCoupon[i].code, &myCoupon[i].discount,
-               myCoupon[i].discountType, myCoupon[i].expiryDate,
-               myCoupon[i].description, myCoupon[i].MinTotal);
+        sscanf(line, "%[^,],%f,%[^,],%[^,],%[^,],%f",
+               Coupon[i].code, &Coupon[i].discount,
+               Coupon[i].discountType, Coupon[i].expiryDate,
+               Coupon[i].description, &Coupon[i].MinTotal);
+
         TotalCoupons++;
         i++;
     }
@@ -798,7 +817,7 @@ void checkoutCart(){
     //loop for printing everything in cart
     while(i<itemsInCart){
 
-        printf("%5d.   |    %s     | %-30s | %-13.2f Baht   | %5d \n", (i+1), InCart[i].productID, InCart[i].productname,InCart[i].price, InCart[i].amount);
+        printf("%5d.   |    %s     | %-30s | %-13.2f baht   | %5d \n", (i+1), InCart[i].productID, InCart[i].productname,InCart[i].price, InCart[i].amount);
 
         i++;
 
@@ -849,13 +868,15 @@ void checkoutCart(){
 
         applyCouponAtCheckout();
 
+        printf("\n  >>> Your total is now %.2f baht\n", InCart[1].Alltotal);
+
         break;
     
     case 2:
 
         printf("\n  > No coupon selected <\n");
         
-        strcpy(InCart[1].CodeUsed, "-");
+        strcpy(MyCoupon[1].code, "-");
 
         break;
 
@@ -969,7 +990,7 @@ void updateInventoryAfterPurchase(){
     for (int j = 0; j < itemsInCart; j++){
         fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d\n",
                 TimeStamp, InCart[j].productname,
-                InCart[j].category, InCart[1].CodeUsed, InCart[j].price,
+                InCart[j].category, MyCoupon[1].code, InCart[j].price,
                 InCart[j].stock);
     }    
 
@@ -987,7 +1008,7 @@ void updateInventoryAfterPurchase(){
     for (int j = 0; j < itemsInCart; j++){
         fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f\n",
                 TimeStamp, InCart[j].productname,
-                InCart[j].category, InCart[1].CodeUsed, InCart[j].price,
+                InCart[j].category, MyCoupon[1].code, InCart[j].price,
                 InCart[j].amount, (InCart[j].price*InCart[j].amount));
     }    
 
@@ -1010,8 +1031,9 @@ void updateInventoryAfterPurchase(){
 // Function that applies coupon | Change return type to appropriate type
 void applyCouponAtCheckout(){
     
-    char enteredCode[20],discountType[10];
+    char enteredCode[20];
     int i=0, done=0;
+    float total, saved=0; 
 
     //print out list header
     printf("\n_______________________________________________________________________________________________\n");
@@ -1020,7 +1042,7 @@ void applyCouponAtCheckout(){
     //loop to print out all products
     while(i<TotalCoupons){
 
-        printf(" %-9s | %-45s | %-10s\n", myCoupon[i].code, myCoupon[i].expiryDate);
+        printf(" %-9s | %-45s | %-10s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
 
         i++;
     }
@@ -1032,19 +1054,82 @@ void applyCouponAtCheckout(){
     while(done==0){
         printf("\n  > Enter coupon code: ");
         scanf("%s",enteredCode);
+        getchar();
 
+        int match=0;
         for(i=0;i<TotalCoupons;i++){
 
-            if(strcmp(enteredCode, myCoupon[i].code)==0){
+            if(strcmp(enteredCode, Coupon[i].code)==0){
 
                 done=1;
+                match++;
+                strcpy(MyCoupon[1].discountType, Coupon[i].discountType);
+                strcpy(MyCoupon[1].code, Coupon[i].code);
+                strcpy(MyCoupon[1].expiryDate, Coupon[i].expiryDate);
+                MyCoupon[1].discount=Coupon[i].discount;
+                MyCoupon[1].MinTotal=Coupon[i].MinTotal;
 
-                strcpy(discountType, myCoupon[i].)
+                break;
 
             }
 
         }
 
+        if(match==0){
+
+            printf("\n<---------Please enter valid code--------->\n");
+
+        }
     }
+
+    printf("\n  > Selected coupon: %s <", MyCoupon[1].code);
+
+    if (isCouponExpired(MyCoupon[1].expiryDate))
+    {
+        printf("\n<--------The coupon is expired.-------->\n");
+        printf("<--------Discount unapplicable--------->\n");
+
+        return;
+    }
+    else
+    {
+        printf("\n > The coupon is valid. <\n");
+    }
+
+    if(InCart[1].Alltotal < MyCoupon[1].MinTotal){
+
+        printf("\n<-------Minimum total not reached-------->\n");
+        printf("<---------Discount unapplicable---------->\n");
+
+        return;        
+
+    }
+
+    if(strcmp(MyCoupon[1].discountType, "Percentage")==0){
+
+        total=InCart[1].Alltotal;
+        total=((total*MyCoupon[1].discount)/100);
+        saved=InCart[1].Alltotal-total;
+
+        InCart[1].Alltotal=total;
+
+        printf("\n >> You Saved %.2f baht! <<\n");
+
+        return;
+
+    }else{
+
+        total=InCart[1].Alltotal;
+        total=total-MyCoupon[1].discount;
+        saved=InCart[1].Alltotal-total;
+
+        InCart[1].Alltotal=total;
+
+        printf("\n >> You Saved %.2f baht! <<\n");
+
+        return;
+
+    }
+
 }
 
