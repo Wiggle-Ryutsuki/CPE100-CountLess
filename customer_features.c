@@ -674,6 +674,12 @@ void viewCart(){
 
     }
 
+    if(itemsInCart==0){
+
+        printf("  ....No Items in cart....\n");
+
+    }
+
     printf("\n___________________________________________________________________________________________________________________________\n");
 
 }
@@ -684,6 +690,15 @@ void checkoutCart(){
     //variables
     float total=0, productTotal;
     int choice, confirm, i=0, j=0, valid=0;
+
+    //Exit if no items in cart
+    if(itemsInCart==0){
+
+        printf("\n\n<<---------Unable to purchase, no items in cart--------->>\n");
+
+        return;
+
+    }
 
     printf("\n\n                                       -----List of Purchasing Items-----");
     printf("\n________________________________________________________________________________________________________________\n");
@@ -886,6 +901,12 @@ void updateInventoryAfterPurchase(){
     }    
 
     fclose(tPtr);
+
+    //reset cart
+    memset(InCart, 0, sizeof(InCart));
+    itemsInCart=0;
+
+    viewCart();
 
     //Closing message
     printf("\n\n__________________________________");
