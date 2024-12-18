@@ -1,6 +1,7 @@
 // This script is for running and testing the entire program
 
 #include <stdio.h>
+#include "customer_features.h"
 
 int main(void) {
     int userRole;    
@@ -26,9 +27,9 @@ int main(void) {
         // --- Customer Menu ---
         int continueShopping = 1;
         while (continueShopping) {
-            printf("\n--- Customer Menu ---\n");
+ printf("\n--- Shop Menu ---\n");
             printf("1. Browse Products\n");
-            printf("2. Search for a Product\n");
+            printf("2. Search Product\n");
             printf("3. Add to Cart\n");
             printf("4. View Cart\n");
             printf("5. Checkout\n");
@@ -51,8 +52,9 @@ int main(void) {
                     viewCart();
                     break;
                 case 5:
-                    applyCouponAtCheckout();
                     checkoutCart();
+                    couponInformation();
+                    applyCouponAtCheckout();
                     updateInventoryAfterPurchase();
                     printf("Thank you for your purchase!\n");
                     continueShopping = 0; // End the loop after checkout

@@ -76,37 +76,6 @@ int itemsInProductsList=0;
 //Will be used to keep track of total amount of coupons for loops, start at 0
 int TotalCoupons=0;
 
-//test
-int main(){
-
-    productInformation();
-    couponInformation();
-
-    //browseProducts();
-    //searchProduct();
-    //searchProduct();
-    //searchProduct();
-    addToCart();
-    //addToCart();
-    //addToCart();
-
-    //viewCart();
-    //browseProducts();
-    //searchProduct();
-
-    checkoutCart();
-
-    //for(int i =0; i<TotalCoupons; i++){
-
-        //printf(" %s %.2f %s %s %.2f\n", Coupon[i].code, Coupon[i].discount,
-              // Coupon[i].discountType,
-              // Coupon[i].description, Coupon[i].MinTotal );
-
-    //}
-
-}
-
-
 //Reads product file and adds product information to struct, should be done at start of program
 void productInformation(){
 
@@ -194,9 +163,8 @@ void productInformation(){
 //Reads coupon file and adds coupon information to struct, should be done at start of program
 void couponInformation(){
 
-
     //opens file
-    FILE *file = fopen("coupons2.csv","r");
+    FILE *file = fopen("coupons.csv","r");
 
     //check if file exists
     if (file == NULL){
@@ -989,7 +957,7 @@ void updateInventoryAfterPurchase(){
     sprintf(TimeStamp, "%02d/%02d/%d %d:%d", tm.tm_mon + 1, tm.tm_mday, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
 
     //update the Logs file
-    FILE *lPtr = fopen("logs2.csv","a");
+    FILE *lPtr = fopen("logs.csv","a");
 
     //check if file exists
     if (lPtr == NULL){

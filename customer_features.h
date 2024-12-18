@@ -8,7 +8,6 @@ void viewCart();
 void checkoutCart();
 void updateInventoryAfterPurchase();
 void applyCouponAtCheckout();
-
-//For initializing product database
-void productInformation();
-#endif
+void productInformation(); //For initializing product database
+void couponInformation(); //For initializing coupon database
+#endif 
