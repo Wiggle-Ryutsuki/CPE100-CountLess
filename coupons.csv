@@ -1,4 +1,4 @@
-﻿Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description,Min Total
+Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description,Min Total
 SUMMER10,10,Percentage,2024-08-31,Get 10% off your summer purchases.,0
 FLAT50,50,Flat Value,2025-09-30,Flat 50 baht discount on orders above 200 baht.,200
 WELCOME15,15,Percentage,2024-12-31,New user welcome offer with 15% off.,0
