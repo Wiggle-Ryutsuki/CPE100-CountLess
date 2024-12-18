@@ -1,4 +1,4 @@
-Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description,Min Total (Baht)
+Coupon Name,Amount of Discount,Discount Type,Expiry Date,Description,Min Total
 SUMMER10,10,Percentage,2024-08-31,Get 10% off your summer purchases.,100
 FLAT50,50,Flat Value,2024-09-30,Flat 50 baht discount on orders above 200 baht.,200
 WELCOME15,15,Percentage,2024-12-31,New user welcome offer with 15% off.,150
@@ -9,8 +9,7 @@ FLASH75,75,Flat Value,2024-08-15,Flat 75 baht off during the flash sale event.,3
 WEEKEND30,30,Percentage,2024-07-20,30% discount for weekend shopping.,100
 MONSOON20,20,Percentage,2024-08-01,Monsoon offer: 20% off on rainwear.,150
 DEAL40,40,Flat Value,2024-09-05,Grab 40 baht off on your next big purchase.,200
-SIGMA10,50,Percentage,2024-12-30,,40
-SIGMA30,30,Percentage,2023-12-31,,200
-SALE40,40,Flat Value,2024-12-30,,200
-SALE75,75,Percentage,2024-12-23,,200
-SALE90,90,Flat Value,2024-3-10,A discount of 90 Baht,50
+SALE30,30,Percentage,2023-2-20,it's expired bro,200
+NICE50,50,Flat Value,2024-3-20,A Great discount,200
+DIS30,30,Percentage,2023-4-20,"Yolo, bolo",300
+EYO40,40,Percentage,2024-12-30,"TO YOUUUUUUUU, MY LUV",600

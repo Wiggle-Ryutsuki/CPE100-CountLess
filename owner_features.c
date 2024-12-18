@@ -40,7 +40,6 @@ void restockProduct();
 void logAction(const char *actionType, const char *productName, const char *category, const char *discountCode, float price, int stockQuantity);
 void createCoupon();
 void validateCoupon();
-void applyCoupon();
 
 // Helper functions
 void getLastProductID();
@@ -486,10 +485,7 @@ void restockProduct()
 
     // Display products for selection
     printf("Select a product to restock by entering the Product ID:\n");
-    for (int i = 1; i < lineCount; i++)
-    {
-        printf("%s", lines[i]); // Display each product
-    }
+    viewProduct();
 
     // Get user selection
     char selectedProductID[10];
@@ -569,7 +565,6 @@ void restockProduct()
     logAction("Product Restocked", product.productName, product.category, "-", product.price, product.stockQuantity);
 }
 
-
 // Function to log actions
 void logAction(const char *actionType, const char *productName, const char *category, const char *discountCode, float price, int stockQuantity) {
     FILE *file = fopen("logs.csv", "a");
@@ -588,9 +583,7 @@ void logAction(const char *actionType, const char *productName, const char *cate
     fclose(file);
 }
 
-
 // Function to create a coupon
-// Function that creates coupon
 void createCoupon()
 {
     // Open the file in append mode
@@ -640,12 +633,12 @@ void createCoupon()
     // Prompt the user for a valid expiry date
     do
     {
-        // Clear the input buffer to ensure no leftover newline characters
-        fflush(stdin);
-        
         printf("Enter Expiry Date (YYYY-MM-DD): ");
-        fgets(expiryDate, sizeof(expiryDate), stdin);
+        scanf("%s", expiryDate);
         expiryDate[strcspn(expiryDate, "\n")] = 0; // Remove newline character
+
+        // Clear the input buffer to ensure no leftover newline characters
+        getchar();
 
         if (!isValidDate(expiryDate))
         {
@@ -660,12 +653,23 @@ void createCoupon()
     fgets(description, sizeof(description), stdin);
     description[strcspn(description, "\n")] = 0; // Remove newline character
 
+    // Check if the description contains a comma and enclose it in quotes if necessary
+    char formattedDescription[200];
+    if (strchr(description, ',') != NULL)
+    {
+        sprintf(formattedDescription, "\"%s\"", description);
+    }
+    else
+    {
+        strcpy(formattedDescription, description);
+    }
+
     printf("Enter Minimum Total (Baht): ");
     fgets(inputBuffer, sizeof(inputBuffer), stdin);
     sscanf(inputBuffer, "%d", &minTotal);
 
     // Write the new coupon details to the file
-    fprintf(file, "%s,%d,%s,%s,%s,%d\n", couponName, amountOfDiscount, discountType, expiryDate, description, minTotal);
+    fprintf(file, "%s,%d,%s,%s,%s,%d\n", couponName, amountOfDiscount, discountType, expiryDate, formattedDescription, minTotal);
 
     // Close the file
     fclose(file);
@@ -795,7 +799,7 @@ int isValidDate(const char *date)
         return 0; // Invalid format
     }
     // Basic validation of date components
-    if (year < 1900 || month < 1 || month > 12 || day < 1)
+    if (year < 1900 || month < 1 || month > 12 || day < 1 || day > 31)
     {
         return 0; // Invalid date
     }
