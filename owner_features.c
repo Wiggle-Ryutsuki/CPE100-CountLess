@@ -20,18 +20,6 @@ typedef struct {
     char lastUpdated[20];
 } Product;
 
-// Struct for Coupon Information
-typedef struct {
-    char code[20];
-    int discountAmount;
-    char discountType[20];
-    char expiryDate[11];
-    char description[100];
-    int minTotal;
-} Coupon;
-
-
-
 void addProduct();
 void viewProduct();
 void editProduct();
@@ -597,7 +585,8 @@ void createCoupon()
 
     // Variables to store coupon details
     char couponName[20], discountType[20], expiryDate[11], description[100];
-    int amountOfDiscount, minTotal, discountChoice;
+    float amountOfDiscount, minTotal;
+    int discountChoice;
     char inputBuffer[100]; // Buffer for reading input
 
     // Prompt the user for coupon details
@@ -607,7 +596,7 @@ void createCoupon()
 
     printf("Enter Amount of Discount: ");
     fgets(inputBuffer, sizeof(inputBuffer), stdin);
-    sscanf(inputBuffer, "%d", &amountOfDiscount);
+    sscanf(inputBuffer, "%f", &amountOfDiscount);
 
     // Prompt the user to enter a choice for discount type
     printf("Enter Discount Type (1 for Percentage, 2 for Flat Value): ");
@@ -665,10 +654,10 @@ void createCoupon()
 
     printf("Enter Minimum Total (Baht): ");
     fgets(inputBuffer, sizeof(inputBuffer), stdin);
-    sscanf(inputBuffer, "%d", &minTotal);
+    sscanf(inputBuffer, "%f", &minTotal);
 
     // Write the new coupon details to the file
-    fprintf(file, "%s,%d,%s,%s,%s,%d\n", couponName, amountOfDiscount, discountType, expiryDate, formattedDescription, minTotal);
+    fprintf(file, "%s,%.2f,%s,%s,%s,%.2f\n", couponName, amountOfDiscount, discountType, expiryDate, formattedDescription, minTotal);
 
     // Close the file
     fclose(file);
