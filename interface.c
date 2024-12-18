@@ -30,10 +30,10 @@ Product getUserInputForProduct() {
     Product p;
 
     printf("Enter product ID: ");
-    scanf("%9s", p.product_id);
+    scanf("%9s", p.productID);
 
     printf("Enter name: ");
-    scanf("%49s", p.name);
+    scanf("%49s", p.productName);
 
     printf("Enter description: ");
     scanf(" %[^\n]s", p.description);
@@ -45,16 +45,16 @@ Product getUserInputForProduct() {
     scanf("%lf", &p.price);
 
     printf("Enter stock quantity: ");
-    scanf("%d", &p.stock_quantity);
+    scanf("%d", &p.stockQuantity);
 
     printf("Enter minimum threshold: ");
-    scanf("%d", &p.minimum_threshold);
+    scanf("%d", &p.minimumThreshold);
 
     printf("Enter restock amount: ");
-    scanf("%d", &p.restock_amount);
+    scanf("%d", &p.restockAmount);
 
     printf("Enter last updated date: ");
-    scanf("%19s", p.last_updated);
+    scanf("%19s", p.lastUpdated);
 
     return p;
 }
