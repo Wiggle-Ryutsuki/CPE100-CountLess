@@ -86,11 +86,11 @@ int main(){
     //searchProduct();
     //searchProduct();
     //searchProduct();
-    addToCart();
-    addToCart();
+    //addToCart();
+    //addToCart();
     addToCart();
 
-    viewCart();
+    //viewCart();
     //browseProducts();
     //searchProduct();
 
@@ -953,7 +953,7 @@ void checkoutCart(){
             time_t t = time(NULL);
             struct tm tm = *localtime(&t);
             char lastUpdated[20];
-            sprintf(lastUpdated, "%02d/%02d/%d\n", tm.tm_mday,  tm.tm_mon + 1, tm.tm_year + 1900); 
+            sprintf(lastUpdated, "%d-%02d-%02d\n", tm.tm_year + 1900, tm.tm_mon + 1 ,tm.tm_mday); 
 
             i=0;
             //loops through items in cart and match it with product in list
