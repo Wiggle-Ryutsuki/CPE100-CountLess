@@ -3,7 +3,7 @@
 
 #include "database.h"
 
-// Menu display and selection
+// Menu display and selection 
 void displayMenu();
 int getMenuSelection();
 

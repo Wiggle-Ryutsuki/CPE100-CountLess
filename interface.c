@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// Display the main menu
+// Display the main menu 
 void displayMenu() {
     printf("\nMenu:\n");
     printf("1. Load Products from File\n");

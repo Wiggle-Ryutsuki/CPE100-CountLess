@@ -1,6 +1,6 @@
 #include "database.h"
 
-// Load products from a CSV file
+// Load products from a CSV file 
 int loadDatabase(const char *filename, Product products[], int *productCount) {
     FILE *file = fopen(filename, "r");
     if (!file) {
