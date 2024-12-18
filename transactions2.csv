@@ -21,3 +21,5 @@ Timestamp,ActionType,User,ProductName,Category,DiscountCode,Price,Quantity,Item 
 12/18/2024 16:26,Purchase Completed,Customer,Pen,Stationary,-,12.00,1,12.00,12.00
 12/18/2024 16:31,Purchase Completed,Customer,Pen,Stationary,-,12.00,1,12.00,12.00
 12/18/2024 16:34,Purchase Completed,Customer,Pen,Stationary,WELCOME15,12.00,1,12.00,1.80
+12/18/2024 16:56,Purchase Completed,Customer,Pencil,Stationary,WELCOME15,8.00,65,520.00,228.00
+12/18/2024 16:56,Purchase Completed,Customer,Polo Shirt,Merch,WELCOME15,100.00,10,1000.00,228.00

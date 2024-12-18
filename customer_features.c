@@ -76,37 +76,48 @@ int itemsInProductsList=0;
 //Will be used to keep track of total amount of coupons for loops, start at 0
 int TotalCoupons=0;
 
-//test
+/*
 int main(){
 
     productInformation();
     couponInformation();
+    int test = 1, choice;
 
-    browseProducts();
-    //searchProduct();
-    //searchProduct();
-    //searchProduct();
-    addToCart();
-    //addToCart();
-    //addToCart();
+    while(test==1){
 
-    //viewCart();
-    //browseProducts();
-    //searchProduct();
+        printf("\ntest Options\n1. browse products\n2. search products\n3. add to cart\n4. view cart\n5. check out cart\n6. exit test\n");
 
-    checkoutCart();
-    //viewCart();
+        scanf("%d",& choice);
+        getchar();
 
-    //for(int i =0; i<TotalCoupons; i++){
-
-        //printf(" %s %.2f %s %s %.2f\n", Coupon[i].code, Coupon[i].discount,
-              // Coupon[i].discountType,
-              // Coupon[i].description, Coupon[i].MinTotal );
-
-    //}
+        switch (choice)
+        {
+        case 1:
+            browseProducts();
+            break;
+        case 2:
+            searchProduct();
+            break;
+        case 3:
+            addToCart();
+            break;
+        case 4:
+            viewCart();
+            break;
+        case 5:
+            checkoutCart();
+            break;
+        case 6:
+            test=0;
+            break;    
+        default:
+            break;
+        }
+    
+    }
 
 }
-
+*/
 
 //Reads product file and adds product information to struct, should be done at start of program
 void productInformation(){
@@ -197,7 +208,7 @@ void couponInformation(){
 
 
     //opens file
-    FILE *file = fopen("coupons2.csv","r");
+    FILE *file = fopen("coupons.csv","r");
 
     //check if file exists
     if (file == NULL){
@@ -866,7 +877,7 @@ void checkoutCart(){
     }
 
     //Total before any coupons applied
-    printf("\n  >>> Your total is %.2f Baht\n", total);
+    printf("\n  >>> Your total is %.2f baht\n", total);
 
     //asks if you would like to use coupon
     printf("\n<------Would you like to use your coupon?------>\n");
@@ -1036,7 +1047,7 @@ void updateInventoryAfterPurchase(){
 
 
     //update the products file
-    FILE *file = fopen("products3.csv","w");
+    FILE *file = fopen("products.csv","w");
 
     //check if file exists
     if (file == NULL){
@@ -1064,7 +1075,7 @@ void updateInventoryAfterPurchase(){
     sprintf(TimeStamp, "%02d/%02d/%d %d:%d", tm.tm_mon + 1, tm.tm_mday, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
 
     //open the Logs file for update
-    FILE *lPtr = fopen("logs2.csv","a");
+    FILE *lPtr = fopen("logs.csv","a");
 
     //check if file exists
     if (lPtr == NULL){
