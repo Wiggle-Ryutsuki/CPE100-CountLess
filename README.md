@@ -99,8 +99,8 @@ Presentation Date: To be announced. (it should be 18th December 2024)
 
 ### Project Lead/Coordinator
 
-- Name:
-- ID: 6707050____
+- Name: Maimoona Aziz
+- ID: 67070503473
 
 Code Focus:
 
@@ -140,7 +140,7 @@ Helper File:
 
 ### Customer Features Developer
 
-- Name: Iris
+- Name: Iris French
 - ID: 67070503478
 
 Code Focus:
@@ -165,7 +165,7 @@ Helper File:
 
 ### Hybrid and Automation Developer
 
-- Name: Snooker
+- Name: Jeerasak Phisawong
 - ID: 67070503461
 
 Code Focus:
