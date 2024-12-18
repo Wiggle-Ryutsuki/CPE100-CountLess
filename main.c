@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include "customer_features.h"
+#include "owner_features.h"
 
 int main(void) {
     int userRole;    
@@ -28,7 +29,7 @@ int main(void) {
         // --- Customer Menu ---
         int continueShopping = 1;
         while (continueShopping) {
- printf("\n--- Shop Menu ---\n");
+            printf("\n--- Shop Menu ---\n");
             printf("1. Browse Products\n");
             printf("2. Search Product\n");
             printf("3. Add to Cart\n");
@@ -68,9 +69,48 @@ int main(void) {
         // --- Owner Menu ---
         int continueManaging = 1;
         while (continueManaging) {
-            printf("Owner Features\n");
-            continueManaging = 0; // Exit the loop
-            break;
+            printf("\n--- Shop Menu ---\n");
+            printf("1. View Product\n");
+            printf("2. Edit Product\n");
+            printf("3. Add a New Product\n");
+            printf("4. Delete Product From Inventory\n");
+            printf("5. Restock Product\n");
+            printf("6. Create a Coupon\n");
+            printf("7. Check Coupon Validation\n");
+            printf("8. Exit\n");
+            printf("Enter your choice: ");
+            scanf("%d", &choice);
+            getchar();
+            
+            switch (choice) {
+                case 1:
+                    viewProduct();
+                    break;
+                case 2:
+                    editProduct();
+                    break;
+                case 3:
+                    addProduct();
+                    break;
+                case 4:
+                    deleteProduct();
+                    break;
+                case 5:
+                    restockProduct();
+                    break;
+                case 6:
+                    createCoupon();
+                    break;
+                case 7:
+                    validateCoupon();
+                    break;
+                case 8:
+                    printf("Exiting...");
+                    continueManaging = 0; // Exit the loop
+                    break;
+                default:
+                    printf("Invalid choice. Please try again.\n");
+            }
         }
     }
 }

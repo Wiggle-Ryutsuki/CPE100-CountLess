@@ -10,4 +10,7 @@ void updateInventoryAfterPurchase();
 void applyCouponAtCheckout();
 void productInformation(); //For initializing product database
 void couponInformation(); //For initializing coupon database
+
+int isCouponExpired();
+
 #endif 

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "customer_features.c"
 // include other necessary libraries including from other scripts
 
 // Struct for Product Information
@@ -48,7 +49,6 @@ int isLeapYear();
 int isCouponExpired();
 void parseProductLine(char *line, Product *product);
 void printProduct(const Product *product);
-void updateProductFile(Product *products, int count);
 
 // Function to add a new product
 void addProduct()
@@ -829,7 +829,7 @@ int isLeapYear(int year)
 }
 
 // Function to check if a coupon is expired
-int isCouponExpired(const char *expiryDate) {
+/*int isCouponExpired(const char *expiryDate) {
     struct tm expiry = {0};
     time_t now;
     struct tm *current;
@@ -842,7 +842,7 @@ int isCouponExpired(const char *expiryDate) {
         return 1; // Expired
     }
     return 0; // Not expired
-}
+} */
 
 // UI
 void displayOwnerMenu() {
@@ -888,17 +888,4 @@ void handleOwnerSelection(int choice) {
             printf("Invalid choice. Please try again.\n");
             break;
     }
-}
-
-int main(void) {
-    int choice;
-    do {
-        displayOwnerMenu();
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        getchar(); // Consume newline character left by scanf
-        handleOwnerSelection(choice);
-    } while (choice != 0); // Exit when the user chooses 0
-
-    return 0;
 }
