@@ -11,6 +11,7 @@ int main(void) {
     // Step 1: Initialize product database
     printf("Loading product information...\n");
     productInformation();
+    couponInformation();
     printf("Product information loaded successfully!\n");
 
     // Step 2: User role selection
@@ -37,7 +38,7 @@ int main(void) {
             printf("Enter your choice: ");
             scanf("%d", &choice);
             getchar();
-
+            
             switch (choice) {
                 case 1:
                     browseProducts();
@@ -53,10 +54,6 @@ int main(void) {
                     break;
                 case 5:
                     checkoutCart();
-                    couponInformation();
-                    applyCouponAtCheckout();
-                    updateInventoryAfterPurchase();
-                    printf("Thank you for your purchase!\n");
                     continueShopping = 0; // End the loop after checkout
                     break;
                 case 6:
