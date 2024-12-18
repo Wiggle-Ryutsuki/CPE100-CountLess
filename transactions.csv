@@ -26,3 +26,4 @@ Timestamp,ActionType,User,ProductName,Category,DiscountCode,Price,Quantity,Item 
 12/18/2024 18:59,Purchase Completed,Customer,Manga,Books,FLAT50,250.00,1,250.00,200.00
 12/18/2024 19:3,Purchase Completed,Customer,Pencil,Stationary,-,8.00,2,16.00,16.00
 12/18/2024 19:51,Purchase Completed,Customer,Cap,Merch,-,60.00,1,60.00,60.00
+12/18/2024 22:56,Purchase Completed,Customer,Manga,Books,-,250.00,1,250.00,250.00

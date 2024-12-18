@@ -41,6 +41,17 @@ typedef struct {
     double total;               // Total price = price * quantity
 } Transaction;
 
+// Struct for Coupon Information From Asad
+typedef struct             // From Asad
+{
+    char code[20];         // From Asad
+    int discountAmount;    // From Asad
+    char discountType[20]; // From Asad
+    char expiryDate[11];   // From Asad
+    char description[100]; // From Asad
+    int minTotal;          // From Asad
+} Coupon;                  // From Asad
+
 // Product-related functions
 int loadDatabase(const char *filename, Product products[], int *productCount);
 int saveDatabase(const char *filename, Product products[], int productCount);

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "customer_features.c"
+#include "shared_helper.h"
 // include other necessary libraries including from other scripts
 
 // Struct for Product Information
@@ -46,7 +46,6 @@ void validateCoupon();
 void getLastProductID();
 int isValidDate();
 int isLeapYear();
-int isCouponExpired();
 void parseProductLine(char *line, Product *product);
 void printProduct(const Product *product);
 
@@ -335,7 +334,12 @@ void editProduct()
     }
     for (int i = 0; i < lineCount; i++)
     {
-        fputs(lines[i], file);
+        if (i < lineCount - 1){
+            fputs(lines[i], file);
+        } else{
+            lines[i][strcspn(lines[i], "\n")] = '\0';
+            fputs(lines[i], file);
+        }
     }
     fclose(file);
 
@@ -450,7 +454,12 @@ void deleteProduct()
     {
         if (i != choice)
         {
-            fputs(lines[i], file);
+            if (i < lineCount - 2){
+                fputs(lines[i], file);
+            } else{
+                lines[i][strcspn(lines[i], "\n")] = '\0';
+                fputs(lines[i], file);
+            }
         }
     }
     fclose(file);
@@ -524,7 +533,6 @@ void restockProduct()
 
     // Update stock quantity and last updated date
     product.stockQuantity += restockAmount;
-    product.restockAmount = restockAmount; // Update the restock amount field
 
     // Get the current date and time
     time_t t = time(NULL);
