@@ -16,15 +16,15 @@
 
 // Product structure
 typedef struct {
-    char product_id[MAX_PRODUCT_ID];
-    char name[MAX_PRODUCT_NAME];
+    char productID[MAX_PRODUCT_ID];
+    char productName[MAX_PRODUCT_NAME];
     char description[MAX_DESCRIPTION];
     char category[MAX_CATEGORY];
     double price; // Changed to double for better precision
-    int stock_quantity;
-    int minimum_threshold;
-    int restock_amount;
-    char last_updated[MAX_DATE];
+    int stockQuantity;
+    int minimumThreshold;
+    int restockAmount;
+    char lastUpdated[MAX_DATE];
 } Product;
 
 // Transaction structure
@@ -40,6 +40,17 @@ typedef struct {
     int quantity;               // Quantity purchased
     double total;               // Total price = price * quantity
 } Transaction;
+
+// Struct for Coupon Information From Asad
+typedef struct             // From Asad
+{
+    char code[20];         // From Asad
+    int discountAmount;    // From Asad
+    char discountType[20]; // From Asad
+    char expiryDate[11];   // From Asad
+    char description[100]; // From Asad
+    int minTotal;          // From Asad
+} Coupon;                  // From Asad
 
 // Product-related functions
 int loadDatabase(const char *filename, Product products[], int *productCount);
