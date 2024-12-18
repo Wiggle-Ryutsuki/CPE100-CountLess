@@ -82,19 +82,20 @@ int main(){
     productInformation();
     couponInformation();
 
-    //browseProducts();
+    browseProducts();
     //searchProduct();
     //searchProduct();
     //searchProduct();
-    //addToCart();
-    //addToCart();
     addToCart();
+    //addToCart();
+    //addToCart();
 
     //viewCart();
     //browseProducts();
     //searchProduct();
 
     checkoutCart();
+    //viewCart();
 
     //for(int i =0; i<TotalCoupons; i++){
 
@@ -533,16 +534,18 @@ void browseProducts(){
     int i=0;
 
     //print out list header
-    printf("\n___________________________________________________________________________________________________________________________\n");
-    printf("\nProduct ID |          Product name          |                  Description                  |      Price      |  Remaining\n");
-    printf("___________________________________________________________________________________________________________________________\n");
+    printf("\n__________________________________________________________________________________________________________________________________________________\n");
+    printf("\nProduct ID |          Product name          |                  Description                  |       Category       |      Price      |  Remaining\n");
+    printf("__________________________________________________________________________________________________________________________________________________\n");
     //loop to print out all products
     while(i<itemsInProductsList){
 
-        printf(" %-9s | %-30s | %-45s | %-10.2f baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+        printf(" %6s    | %-30s | %-45s | %-20s | %-10.2f baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].category, product[i].price, product[i].stockquantity);
 
         i++;
     }
+
+    printf("__________________________________________________________________________________________________________________________________________________\n");
 
 }
 
@@ -899,6 +902,9 @@ void checkoutCart(){
 
     }
 
+    //default coupon code value
+    strcpy(MyCoupon[1].code, "-");
+
     //Slection, use coupon or no coupon
     switch (choice)
     {
@@ -919,9 +925,6 @@ void checkoutCart(){
         //if no coupon selected
 
         printf("\n  > No coupon selected <\n");
-        
-        //There is no coupon code
-        strcpy(MyCoupon[1].code, "-");
 
         break;
 
@@ -980,6 +983,36 @@ void checkoutCart(){
 
             //updates the required csv files
             updateInventoryAfterPurchase();
+
+            //Printing out transaction record
+            printf("\n\n                                       -----Transaction Record-----");
+            printf("\n________________________________________________________________________________________________________________\n");
+            printf("\nItem No. | Product ID |          Product name           |    Price per unit    |  Amount\n");
+            printf("_________________________________________________________________________________________________________________\n");
+            printf("\n");
+
+            //loop for printing everything in cart
+            i=0;
+            while(i<itemsInCart){
+
+                printf("%5d.   |    %s     | %-30s | %-13.2f baht   | %5d \n", (i+1), InCart[i].productID, InCart[i].productname,InCart[i].price, InCart[i].amount);
+
+                i++;
+
+            }
+
+            printf("\n                                                         # Coupon Code used: %s ", MyCoupon[1].code);
+            printf("\n                                                         # Transaction total: %.2f baht\n                                                         # Purchased on %s ", InCart[1].Alltotal, lastUpdated);          
+            printf("_________________________________________________________________________________________________________________\n");
+
+            //reset cart
+            memset(InCart, 0, sizeof(InCart));
+            itemsInCart=0;
+
+            //Closing message
+            printf("\n\n    >> Purchase successful! <<\n");
+            printf("\n >> Thank you for your patronage <<");
+            printf("\n__________________________________");            
 
         }else if(confirm==2){
 
@@ -1061,24 +1094,14 @@ void updateInventoryAfterPurchase(){
 
     //write out transaction info
     for (int j = 0; j < itemsInCart; j++){
-        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f\n",
+        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f,%.2f\n",
                 TimeStamp, InCart[j].productname,
                 InCart[j].category, MyCoupon[1].code, InCart[j].price,
-                InCart[j].amount, (InCart[j].price*InCart[j].amount));
+                InCart[j].amount, (InCart[j].price*InCart[j].amount), InCart[1].Alltotal);
     }    
 
     //close the transactions file
     fclose(tPtr);
-
-    //reset cart
-    memset(InCart, 0, sizeof(InCart));
-    itemsInCart=0;
-
-    //Closing message
-    printf("\n\n__________________________________");
-    printf("\n\n    >> Purchase successful! <<\n");
-    printf("\n >> Thank you for your patronage <<");
-    printf("\n__________________________________");
 
 }
 
@@ -1096,7 +1119,7 @@ void applyCouponAtCheckout(){
     //loop to print out all products
     while(i<TotalCoupons){
 
-        printf(" %-10s | %-50s | %10s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
+        printf(" %-10s | %-50s | %20s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
 
         i++;
     }
@@ -1150,6 +1173,9 @@ void applyCouponAtCheckout(){
         printf("\n\n<--------The coupon is expired.-------->\n");
         printf("<--------Discount unapplicable--------->\n");
 
+        //set code used to "-"
+        strcpy(MyCoupon[1].code, "-");       
+
         return;
     }
 
@@ -1158,6 +1184,9 @@ void applyCouponAtCheckout(){
 
         printf("\n\n<-------Minimum total not reached-------->\n");
         printf("<---------Discount unapplicable---------->\n");
+
+        //set code used to "-"
+        strcpy(MyCoupon[1].code, "-");       
 
         return;        
 
