@@ -48,7 +48,6 @@ int isLeapYear();
 int isCouponExpired();
 void parseProductLine(char *line, Product *product);
 void printProduct(const Product *product);
-void updateProductFile(Product *products, int count);
 
 // Function to add a new product
 void addProduct()
