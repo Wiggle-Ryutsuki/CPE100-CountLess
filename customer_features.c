@@ -250,13 +250,15 @@ void searchProduct(){
     printf("\n| -Search by name or ID : Enter 1 |\n|                                 |\n| -Search by category   : Enter 2 |\n|                                 |\n| -Search by price      : Enter 3 |\n");
     printf("|_________________________________|\n");
 
-    //receive right input
+    //receive correct input
     while(done==0){
-
+        
+        //enter your selection
         printf("\n  > Enter your selection: ");
         scanf("%d",&choice);
         getchar();
     
+        //if input is correct stop loop, else ask for reinput
         if(choice==1 || choice==2 || choice==3){
 
             done=1;
@@ -273,13 +275,14 @@ void searchProduct(){
     {
     //search product by name
     case 1:
-        done=1;
+        
         //Enter product name
         printf("\n<------Search by name selected------>\n");
         printf("\n  > Enter product name or ID: ");
         scanf("%[^\n]s",productNameOrID);
         getchar();
 
+        //search result header
         printf("\n______________________________________________________________________________________________________________________________________________________________\n");
         printf("\n                                                                     Search results for %s\n", productNameOrID);
         printf("______________________________________________________________________________________________________________________________________________________________");
@@ -326,8 +329,9 @@ void searchProduct(){
 
                 //product name comparisons, if it is the same, print out the information
                 if(strcmp(enteredName, compareName)==0){
-                    match++;
-                    printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+
+                    match++; //item was found
+                    printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
 
                     break;
 
@@ -338,8 +342,9 @@ void searchProduct(){
             //If product Ids are the same, proceed
             if(strcmp(productNameOrID,product[i].productID) == 0){
                 
+                //item was found
                 match++;
-                printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);    
+                printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);    
                 
                 break;
 
@@ -360,6 +365,7 @@ void searchProduct(){
         scanf("%[^\n]s",category);
         getchar();
 
+        //search result header
         printf("\n______________________________________________________________________________________________________________________________________________________________\n");
         printf("\n                                                                    Search results for %s\n", category);
         printf("______________________________________________________________________________________________________________________________________________________________");                                                                 
@@ -371,7 +377,7 @@ void searchProduct(){
             //If string lentghs are the same, then it can be the category we are looking for
             if(strlen(category)==strlen(product[i].category)){
 
-                //variable to coampre category without modifying the actual struct data
+                //variable to compear category without modifying the actual struct data
                 char compareCategory[50];
 
                 //It takes the name of the current product category
@@ -404,8 +410,9 @@ void searchProduct(){
 
                 //category comparisons, if it is the same, print out the information
                 if(strcmp(category, compareCategory)==0){
-                    match++;
-                    printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+
+                    match++; //item was found
+                    printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
                 }
 
             }else{
@@ -426,13 +433,24 @@ void searchProduct(){
            
         //Enter product price
         printf("\n<------Search by price selected------>\n");
-        printf("\n  > Enter upper price range: ");
+        printf("\n  > Enter upper price range: "); //enter upper price range
         scanf("%f",&uppper_price);
         getchar();
-        printf("  > Enter lower price range: ");
+        printf("  > Enter lower price range: "); //enter lower price range
         scanf("%f",&lower_price);
         getchar();        
 
+        //if upper price range is less than lower price range
+        if(uppper_price<lower_price){
+
+            //switch values
+            int temp = uppper_price;
+            uppper_price = lower_price;
+            lower_price = temp;
+
+        }
+
+        //search result header
         printf("\n______________________________________________________________________________________________________________________________________________________________\n");
         printf("\n                                                            Search results for prices from %.2f to %.2f\n", lower_price, uppper_price);
         printf("______________________________________________________________________________________________________________________________________________________________");                                                                 
@@ -446,8 +464,8 @@ void searchProduct(){
             if(product[i].price<=uppper_price && product[i].price>=lower_price){
 
                 //print out product info
-                match++;
-                printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f Baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+                match++; //item was found
+                printf("Product ID: %s | Product name: %-30s | %-45s | Price: %-8.2f baht | Remaining: %d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
 
             }
 
@@ -465,6 +483,7 @@ void searchProduct(){
       
     }    
 
+    //If no items were found
     if(match==0){
 
         printf(" ....No items found....\n");
@@ -482,16 +501,18 @@ void browseProducts(){
     int i=0;
 
     //print out list header
-    printf("\n___________________________________________________________________________________________________________________________\n");
-    printf("\nProduct ID |          Product name          |                  Description                  |      Price      |  Remaining\n");
-    printf("___________________________________________________________________________________________________________________________\n");
+    printf("\n__________________________________________________________________________________________________________________________________________________\n");
+    printf("\nProduct ID |          Product name          |                  Description                  |       Category       |      Price      |  Remaining\n");
+    printf("__________________________________________________________________________________________________________________________________________________\n");
     //loop to print out all products
     while(i<itemsInProductsList){
 
-        printf(" %-9s | %-30s | %-45s | %-10.2f Baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].price, product[i].stockquantity);
+        printf(" %6s    | %-30s | %-45s | %-20s | %-10.2f baht | %7d\n", product[i].productID, product[i].productname, product[i].description, product[i].category, product[i].price, product[i].stockquantity);
 
         i++;
     }
+
+    printf("__________________________________________________________________________________________________________________________________________________\n");
 
 }
 
@@ -509,13 +530,16 @@ void addToCart(){
     scanf("%[^\n]s",productNameOrID);
     getchar();
 
+    //Check if input is correct, quantity shouldnt be less than or equal to 0
     while(done==0){
 
+        //enter quantity
         printf("  > Please enter quantity of purchase: ");
 
         scanf("%d",&quantity);
         getchar();
 
+        //If input in incorrect, ask for reinput
         if(quantity<=0){
 
             printf("\n<<---------Please enter valid amount!--------->>\n");
@@ -572,15 +596,15 @@ void addToCart(){
                 //Name comparisons, if it is the same, proceed
                 if(strcmp(enteredName, compareName)==0){
 
-                    match++;
-                    AlreadyInCart=1;
+                    match++; //item was found
+                    AlreadyInCart=1; //item is already in cart
                     //Check if there are enough items in stock    
                     if((quantity + InCart[j].amount) <= InCart[j].stock){
 
                         //if there are enough items, add item to cart
                         InCart[j].amount += quantity;
 
-                        printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
+                        printf("\n  > %d of item %s %s successfully added to cart <\n", quantity, InCart[j].productID, InCart[j].productname);
                         
                     }else{
 
@@ -596,15 +620,15 @@ void addToCart(){
             //check if product IDs are the same
             if(strcmp(productNameOrID,InCart[j].productID) == 0){
 
-                match++;  
-                AlreadyInCart=1;              
+                match++; //item was found
+                AlreadyInCart=1; //item is already in cart              
                 //Check if there are enough items in stock               
                 if((quantity + InCart[j].amount) <= InCart[j].stock){
 
                     //if there are enough items, add item to cart                
                     InCart[j].amount+=quantity;
                             
-                    printf("\n  > %d of item %s %s successfully added to cart < \n",InCart[j].amount , InCart[j].productID, InCart[j].productname);
+                    printf("\n  > %d of item %s %s successfully added to cart < \n",quantity , InCart[j].productID, InCart[j].productname);
 
                 }else{
 
@@ -662,7 +686,7 @@ void addToCart(){
             //Name comparisons, if it is the same, proceed
             if(strcmp(enteredName, compareName)==0){
 
-                match++;
+                match++; //item was found
                 //Check if there are enough items in stock    
                 if(quantity<=product[i].stockquantity){
 
@@ -676,7 +700,7 @@ void addToCart(){
 
                     printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
-                    itemsInCart++;
+                    itemsInCart++; //item in cart increases
                     
                 }else{
 
@@ -693,7 +717,7 @@ void addToCart(){
         //If product Ids are the same, proceed
         if(strcmp(productNameOrID,product[i].productID) == 0){
             
-            match++;
+            match++;// item was found
             //Check if there are enough items in stock               
             if(quantity<=product[i].stockquantity){
 
@@ -707,7 +731,7 @@ void addToCart(){
                         
                 printf("\n  > %d of item %s %s successfully added to cart <\n",InCart[itemsInCart].amount , InCart[itemsInCart].productID, InCart[itemsInCart].productname);
 
-                itemsInCart++;
+                itemsInCart++; //item in cart increases
 
             }else{
 
@@ -737,6 +761,7 @@ void viewCart(){
     //variables
     int i=0;
 
+    //cart item header
     printf("\n___________________________________________________________________________________________________________________________\n");
     printf("\n                                                     Items in Cart\n");
     printf("___________________________________________________________________________________________________________________________");
@@ -745,12 +770,13 @@ void viewCart(){
     //loop for printing everything in cart
     while(i<itemsInCart){
 
-        printf("%4d. Product ID: %s | Product name: %-30s | Amount: %-10d | Product total: %-8.2f Baht\n", (i+1), InCart[i].productID, InCart[i].productname, InCart[i].amount, (InCart[i].price*InCart[i].amount));
+        printf("%4d. Product ID: %s | Product name: %-30s | Amount: %-10d | Product total: %-8.2f baht\n", (i+1), InCart[i].productID, InCart[i].productname, InCart[i].amount, (InCart[i].price*InCart[i].amount));
 
         i++;
 
     }
 
+    //If there are no items in cart
     if(itemsInCart==0){
 
         printf("  ....No Items in cart....\n");
@@ -806,16 +832,21 @@ void checkoutCart(){
 
     }
 
-    printf("\n  >>> Your total is %.2f Baht\n", total);
+    //Total before any coupons applied
+    printf("\n  >>> Your total is %.2f baht\n", total);
 
+    //asks if you would like to use coupon
     printf("\n<------Would you like to use your coupon?------>\n");
     printf("\n  -Yes: Enter 1\n  -No : Enter 2\n");
     printf("<---------------------------------------------->\n");
 
+    //if input invalid, ask for reinput
     while(valid==0){
+        //enter choice
         printf("\n  > Use coupon?: ");
         scanf("%d",&choice);
 
+        //Incase if char was entered, so program is not stuck in infinity loop
         if(loop>10){
             
             printf("<<---------Error--------->>");
@@ -823,6 +854,7 @@ void checkoutCart(){
 
         }
 
+        //checks if input valid
         if(choice==1 || choice == 2){
 
             valid = 1;
@@ -837,24 +869,29 @@ void checkoutCart(){
 
     }
 
+    //default coupon code value
+    strcpy(MyCoupon[1].code, "-");
+
     //Slection, use coupon or no coupon
     switch (choice)
     {
     case 1:
-        
+        //if coupon was selected
+
         InCart[1].Alltotal=total;
 
+        //apply your coupon
         applyCouponAtCheckout();
 
+        //displays total after coupon is used
         printf("\n  >>> Your total is now %.2f baht\n", InCart[1].Alltotal);
 
         break;
     
     case 2:
+        //if no coupon selected
 
         printf("\n  > No coupon selected <\n");
-        
-        strcpy(MyCoupon[1].code, "-");
 
         break;
 
@@ -862,34 +899,39 @@ void checkoutCart(){
 
         printf("\n<----------Please enter valid input!(Order Cancled)--------->\n");
 
-        break;
+        return;
     }
 
     int done=0;
-            
+    //Checks for valid input, if invalid loop for reinput            
     while(done==0){
 
+        //display purchase options
         printf("\n<------Confirm purchase?------>\n");
         printf("\n  - Confirm: Enter 1\n  - Cancel : Enter 2\n");
 
+        //enter choice
         printf("\n  > Confirm?: ");
         scanf("%d",&confirm);
 
+        //If confirm purchase
         if(confirm==1){
 
             done=1;
 
-            // Get the current date and time
+            // Get the current date and time, to update last update
             time_t t = time(NULL);
             struct tm tm = *localtime(&t);
             char lastUpdated[20];
-            sprintf(lastUpdated, "%02d/%02d/%d\n", tm.tm_mday,  tm.tm_mon + 1, tm.tm_year + 1900); 
+            sprintf(lastUpdated, "%d-%02d-%02d\n", tm.tm_year + 1900, tm.tm_mon + 1 ,tm.tm_mday); 
 
             i=0;
+            //loops through items in cart and match it with product in list
             while(i<itemsInCart){
 
                 while (j<itemsInProductsList){
-                        
+                    
+                    //If product ID of item in cart and product list match, update information
                     if(strcmp(InCart[i].productID, product[j].productID)==0){
 
                         product[j].stockquantity-=InCart[i].amount;
@@ -906,10 +948,42 @@ void checkoutCart(){
                 i++;
             }
 
+            //updates the required csv files
             updateInventoryAfterPurchase();
+
+            //Printing out transaction record
+            printf("\n\n                                       -----Transaction Record-----");
+            printf("\n________________________________________________________________________________________________________________\n");
+            printf("\nItem No. | Product ID |          Product name           |    Price per unit    |  Amount\n");
+            printf("_________________________________________________________________________________________________________________\n");
+            printf("\n");
+
+            //loop for printing everything in cart
+            i=0;
+            while(i<itemsInCart){
+
+                printf("%5d.   |    %s     | %-30s | %-13.2f baht   | %5d \n", (i+1), InCart[i].productID, InCart[i].productname,InCart[i].price, InCart[i].amount);
+
+                i++;
+
+            }
+
+            printf("\n                                                         # Coupon Code used: %s ", MyCoupon[1].code);
+            printf("\n                                                         # Transaction total: %.2f baht\n                                                         # Purchased on %s ", InCart[1].Alltotal, lastUpdated);          
+            printf("_________________________________________________________________________________________________________________\n");
+
+            //reset cart
+            memset(InCart, 0, sizeof(InCart));
+            itemsInCart=0;
+
+            //Closing message
+            printf("\n\n    >> Purchase successful! <<\n");
+            printf("\n >> Thank you for your patronage <<");
+            printf("\n__________________________________");            
 
         }else if(confirm==2){
 
+            //If cancle was chosen
             done=1;
             printf("\n  > Order canceled <\n");
             printf("_________________________________________________________________________________________________________________\n");
@@ -929,7 +1003,7 @@ void updateInventoryAfterPurchase(){
 
 
     //update the products file
-    FILE *file = fopen("products3.csv","w");
+    FILE *file = fopen("products.csv","w");
 
     //check if file exists
     if (file == NULL){
@@ -937,7 +1011,7 @@ void updateInventoryAfterPurchase(){
         return;
     }
 
-
+    //print out the new information
     fprintf(file,"ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated\n");
     for (int j = 0; j < itemsInProductsList; j++){
         fprintf(file,"%s,%s,%s,%s,%.2f,%d,%d,%d,%s",
@@ -956,7 +1030,7 @@ void updateInventoryAfterPurchase(){
     char TimeStamp[20];
     sprintf(TimeStamp, "%02d/%02d/%d %d:%d", tm.tm_mon + 1, tm.tm_mday, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
 
-    //update the Logs file
+    //open the Logs file for update
     FILE *lPtr = fopen("logs.csv","a");
 
     //check if file exists
@@ -965,6 +1039,7 @@ void updateInventoryAfterPurchase(){
         return;
     }
 
+    //write purchased item info
     for (int j = 0; j < itemsInCart; j++){
         fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d\n",
                 TimeStamp, InCart[j].productname,
@@ -972,9 +1047,10 @@ void updateInventoryAfterPurchase(){
                 InCart[j].stock);
     }    
 
+    //close the logs file
     fclose(lPtr);
 
-    //update the Logs file
+    //open the transactions file for update
     FILE *tPtr = fopen("transactions2.csv","a");
 
     //check if file exists
@@ -983,32 +1059,22 @@ void updateInventoryAfterPurchase(){
         return;
     }
 
+    //write out transaction info
     for (int j = 0; j < itemsInCart; j++){
-        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f\n",
+        fprintf(file,"%s,Purchase Completed,Customer,%s,%s,%s,%.2f,%d,%.2f,%.2f\n",
                 TimeStamp, InCart[j].productname,
                 InCart[j].category, MyCoupon[1].code, InCart[j].price,
-                InCart[j].amount, (InCart[j].price*InCart[j].amount));
+                InCart[j].amount, (InCart[j].price*InCart[j].amount), InCart[1].Alltotal);
     }    
 
+    //close the transactions file
     fclose(tPtr);
-
-    //reset cart
-    memset(InCart, 0, sizeof(InCart));
-    itemsInCart=0;
-
-    viewCart();
-
-    //Closing message
-    printf("\n\n__________________________________");
-    printf("\n\n    >> Purchase successful! <<\n");
-    printf("\n >> Thank you for your patronage <<");
-    printf("\n__________________________________");
 
 }
 
 // Function that applies coupon | Change return type to appropriate type
 void applyCouponAtCheckout(){
-    
+    //variables
     char enteredCode[20];
     int i=0, done=0;
     float total, saved=0; 
@@ -1020,7 +1086,7 @@ void applyCouponAtCheckout(){
     //loop to print out all products
     while(i<TotalCoupons){
 
-        printf(" %-10s | %-50s | %10s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
+        printf(" %-10s | %-50s | %20s\n", Coupon[i].code, Coupon[i].description, Coupon[i].expiryDate);
 
         i++;
     }
@@ -1028,19 +1094,23 @@ void applyCouponAtCheckout(){
     printf("\n______________________________________________________________________________________________________\n");
 
     printf("\n<-----Select your coupon----->\n");
-        
+    
+    //checks if input is valid, else loop for reinput
     while(done==0){
+        //enter coupon code
         printf("\n  > Enter coupon code: ");
         scanf("%s",enteredCode);
         getchar();
 
         int match=0;
+        //loop and check with all coupon codes
         for(i=0;i<TotalCoupons;i++){
 
+            //if code is the same, update customer coupon
             if(strcmp(enteredCode, Coupon[i].code)==0){
 
                 done=1;
-                match++;
+                match++; //coupon found
                 strcpy(MyCoupon[1].discountType, Coupon[i].discountType);
                 strcpy(MyCoupon[1].code, Coupon[i].code);
                 strcpy(MyCoupon[1].expiryDate, Coupon[i].expiryDate);
@@ -1053,6 +1123,7 @@ void applyCouponAtCheckout(){
 
         }
 
+        //if no code match
         if(match==0){
 
             printf("\n<---------Please enter valid code--------->\n");
@@ -1060,36 +1131,48 @@ void applyCouponAtCheckout(){
         }
     }
 
+    //display selected coupon
     printf("\n  > Selected coupon: %s <", MyCoupon[1].code);
 
+    //checks for expiry date, if expired, coupon cant be used
     if (isCouponExpired(MyCoupon[1].expiryDate))
     {
         printf("\n\n<--------The coupon is expired.-------->\n");
         printf("<--------Discount unapplicable--------->\n");
 
+        //set code used to "-"
+        strcpy(MyCoupon[1].code, "-");       
+
         return;
     }
 
+    //checks if purchase meets the required minimum total to use the coupon
     if(InCart[1].Alltotal < MyCoupon[1].MinTotal){
 
         printf("\n\n<-------Minimum total not reached-------->\n");
         printf("<---------Discount unapplicable---------->\n");
 
+        //set code used to "-"
+        strcpy(MyCoupon[1].code, "-");       
+
         return;        
 
     }
 
+    //checks if coupon is percentage or flat amount type
     if(strcmp(MyCoupon[1].discountType, "Percentage")==0){
 
         printf("\n  > The coupon is valid. <\n");
 
+        //calulate total after applying percentage coupon
         total=InCart[1].Alltotal;
         total=((total*MyCoupon[1].discount)/100);
         saved=InCart[1].Alltotal-total;
 
         InCart[1].Alltotal=total;
 
-        printf("\n >> You Saved %.2f baht! <<\n");
+        //displays amount saved
+        printf("\n >> You Saved %.2f baht! <<\n", saved);
 
         return;
 
@@ -1097,13 +1180,15 @@ void applyCouponAtCheckout(){
 
         printf("\n  > The coupon is valid. <\n");
 
+        //calculates total after applying flat value coupon
         total=InCart[1].Alltotal;
         total=total-MyCoupon[1].discount;
         saved=InCart[1].Alltotal-total;
 
         InCart[1].Alltotal=total;
 
-        printf("\n >> You Saved %.2f baht! <<\n");
+        //displays amount saved
+        printf("\n >> You Saved %.2f baht! <<\n", saved);
 
         return;
 
