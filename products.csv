@@ -1,4 +1,4 @@
-﻿ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated
+ProductID,ProductName,Description,Category,Price,StockQuantity,MinimumThreshold,RestockAmount,LastUpdated
 P001,Pen,Black Ballpoint Pen,Stationary,12.00,50,15,200,2024-07-02
 P002,Pencil,HB Pencil,Stationary,8.00,63,20,200,2024-12-18
 P003,Notebook,"A5 lined, 80 pages",Stationary,25.00,40,12,200,2024-08-23
@@ -26,6 +26,6 @@ P024,Writing Tablet,7*4 -inch drawing tablet,Electronics,2000.00,20,6,200,2024-0
 P025,Computer Mouse,Wired Computer Mouse,Electronics,150.00,35,15,50,2024-12-18
 P026,Charging Cable,USB-C Charging Wire,Electronics,89.00,59,18,200,2024-12-18
 P027,Earphones,"3.5mm plug, 1.2m wire",Electronics,50.00,45,14,200,2024-09-16
-P028,Textbook,"Math for Engineers, 3rd Edition",Books,300.00,65,20,200,2024-12-18
+P028,Textbook,"Math for Engineers, 3rd Edition",Books,300.00,64,20,200,2024-12-18
 P029,Comic Book,Batman,Books,250.00,49,15,200,2024-12-18
 P030,Manga,Fairy Tail: 100 Years Quest,Books,250.00,18,6,200,2024-12-18
