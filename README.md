@@ -4,7 +4,7 @@
 
 The goal of this project is to design and develop an inventory management system
 capable of efficiently tracking, managing, and optimizing inventory within a simulated or real environment. The system should demonstrate capabilities, such
- as item recognition, stock level monitoring, and notifications for restocking.
+as item recognition, stock level monitoring, and notifications for restocking.
 
 ## Inventory System Requirements
 
@@ -37,7 +37,7 @@ capable of efficiently tracking, managing, and optimizing inventory within a sim
   - Create a coupon system that allows the owner to define discount coupons
     with Coupon code.
     - Coupon code has information including, discount percentage and
-        expiration date.
+      expiration date.
   - Allow coupons to be applied at purchase for products.
 
 ### 3. Customer Features
@@ -61,15 +61,15 @@ capable of efficiently tracking, managing, and optimizing inventory within a sim
 ### 1. Hybrid System Requirements
 
 - The program must be **able to read and execute restock and purchase**
-scripts from .txt or .csv files.
+  scripts from .txt or .csv files.
 - For example, if a restock file contains product details along with quantities,
-the program should automatically update the stock based on the quantities
-specified in the file.
+  the program should automatically update the stock based on the quantities
+  specified in the file.
 
 ### 2. Automate System Requirements
 
 - Assuming that some customer would like to purchase in the schedule, the
-program must able to schedule the purchase of the product
+  program must able to schedule the purchase of the product
   - For example, if the program sets the auto purchase to every
     Sunday when Sunday arrives, the quantity of the product should be
     decreased by the quantity set to the auto purchase.
@@ -77,7 +77,7 @@ program must able to schedule the purchase of the product
     computer. We suggest a library `<time.h>` to record and find the
     accurate date and time.
 - The program must be able to restock the product according to the
-threshold of the product quantity inside the inventory system.
+  threshold of the product quantity inside the inventory system.
   - For example, if the threshold is set to 30% of maximum quantity
     100 pieces of that product, when the quantity is below than 30 it
     should automatically restock that product to the set-value.
@@ -93,7 +93,7 @@ Note:
 2. Implemented program
 3. Report with technical details, faced problem, and testing results
 4. Presentation slide
-Presentation Date: To be announced. (it should be 18th December 2024)
+   Presentation Date: To be announced. (it should be 18th December 2024)
 
 ## Team Distribution
 
