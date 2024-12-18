@@ -1051,7 +1051,7 @@ void updateInventoryAfterPurchase(){
     fclose(lPtr);
 
     //open the transactions file for update
-    FILE *tPtr = fopen("transactions2.csv","a");
+    FILE *tPtr = fopen("transactions.csv","a");
 
     //check if file exists
     if (tPtr == NULL){
